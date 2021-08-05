@@ -123,12 +123,3 @@ class ModernTreasury:
         if result.ok:
             return VirtualAccountResponse(result.json())
         return None
-
-    # TODO support idempotency
-
-
-# TODO: make singleton
-SANDBOX_KEY = "test-CxfzxGrJqmNtoUmmyQyXyDR85yi8dGP33zmeYLfzCzuka2D6UpiJLAMscjrX1wPj"
-ORGANIZATION_ID = "4aedefda-78df-4cfc-a3e5-42c2ba3f7e9a"
-
-sandbox_modern_treasury = ModernTreasury(organization_id=ORGANIZATION_ID, api_key=SANDBOX_KEY)
