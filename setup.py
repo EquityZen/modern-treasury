@@ -13,6 +13,6 @@ setup(
     install_requires=['pytest', 'requests'],
     classifiers=[
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3.9.1',
+        'Programming Language :: Python :: 3.9',
     ],
 )
