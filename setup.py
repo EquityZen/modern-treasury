@@ -8,7 +8,7 @@ setup(
     author = 'Issam Zeibak',
     author_email = 'issam.zeibak@equityzen.com',
     url = 'https://github.com/equityzen/modern-treasury',
-    download_url = 'https://github.com/EquityZen/modern_treasury/archive/refs/tags/v_001.tar.gz',
+    download_url = 'https://github.com/EquityZen/modern_treasury/archive/refs/tags/v_0.0.1.tar.gz',
     keywords = ['Modern Treasury', 'Finance'],
     install_requires=['pytest', 'requests'],
     classifiers=[
