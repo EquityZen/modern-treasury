@@ -7,7 +7,6 @@ authors = ["ez-issam <issam.zeibak@equityzen.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 requests = "^2.25.1"
-Flask = "^2.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
