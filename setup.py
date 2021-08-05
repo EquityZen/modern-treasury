@@ -1,7 +1,7 @@
 from distutils.core import setup
 setup(
-    name = 'modern-treasury',
-    packages = ['modern-treasury'],
+    name = 'modern_treasury',
+    packages = ['modern_treasury'],
     version = '0.1',
     license='MIT',
     description = 'Modern Treasury Client Library',
