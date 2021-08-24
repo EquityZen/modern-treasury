@@ -1,8 +1,8 @@
 from typing import List
 
-from modern_treasury.objects.request.account_details import AccountDetailsRequest
-from modern_treasury.objects.request.address import AddressRequest
-from modern_treasury.objects.request.routing_details import RoutingDetailsRequest
+from .account_details import AccountDetailsRequest
+from .address import AddressRequest
+from .routing_details import RoutingDetailsRequest
 
 
 class AccountRequest:

@@ -1,6 +1,7 @@
 from typing import List
 
 from modern_treasury.objects.response.account_details import AccountDetailsResponse
+from modern_treasury.objects.response.routing_details import RoutingDetailsResponse
 
 
 class VirtualAccountResponse:
@@ -35,6 +36,11 @@ class VirtualAccountResponse:
     def account_details(self) -> List[AccountDetailsResponse]:
         result = self.json.get('account_details')
         return [AccountDetailsResponse(account_detail) for account_detail in result]
+
+    @property
+    def routing_details(self) -> List[RoutingDetailsResponse]:
+        result = self.json.get('routing_details')
+        return [RoutingDetailsResponse(routing_detail) for routing_detail in result]
 
     @property
     def metadata(self):

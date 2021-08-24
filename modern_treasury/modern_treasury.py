@@ -8,7 +8,7 @@ from modern_treasury.objects.request.expected_payment import ExpectedPaymentRequ
 from modern_treasury.objects.request.payment_order import PaymentOrderRequest
 from modern_treasury.objects.request.virtual_account import VirtualAccountRequest
 from modern_treasury.objects.response.counterparty import CounterPartyResponse
-from modern_treasury.objects.response.expected_response import ExpectedPaymentResponse
+from modern_treasury.objects.response.expected_payment import ExpectedPaymentResponse
 from modern_treasury.objects.response.internal_account import InternalAccountResponse
 from modern_treasury.objects.response.payment import PaymentOrderResponse
 from modern_treasury.objects.response.virtual_account import VirtualAccountResponse
@@ -35,8 +35,6 @@ class ModernTreasury:
                                  headers={'Content-Type': 'application/json'},
                                  json=payload)
         return response.json()
-
-
 
     # Counter Parties
     def get_counter_parties(self):
