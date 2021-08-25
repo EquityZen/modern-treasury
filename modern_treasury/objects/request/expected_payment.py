@@ -9,7 +9,7 @@ class ExpectedPaymentRequest:
                  date_upper_bound: str = None, date_lower_bound: str = None,
                  description: str = None, statement_descriptor: str = None,
                  metadata: dict = None, counterparty_id: str = None,
-                 line_items: list[LineItemRequest] = None):
+                 line_items=None):
         self.amount_upper_bound = amount_upper_bound
         self.amount_lower_bound = amount_lower_bound
         self.direction = direction # see DirectionTypes
