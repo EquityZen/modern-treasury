@@ -1,11 +1,12 @@
 from typing import List
 
+from modern_treasury.objects.exceptions import ModernTreasuryException
 from modern_treasury.objects.request.account_details import AccountDetailsRequest
 from modern_treasury.objects.request.routing_details import RoutingDetailsRequest
 
 
 class PaymentOrderRequest:
-    def __init__(self, type:str, amount:int, direction, originating_account_id,
+    def __init__(self, type:str, amount:int, direction, originating_account_id=None,
                  subtype:str = None, fallback_type:str = None, receiving_account_id:str = None,
                  account_type:str = None, party_name:str = None,
                  party_type:str = None, party_address:str = None, account_details: List[AccountDetailsRequest] = None,
@@ -30,9 +31,9 @@ class PaymentOrderRequest:
         self.party_name = party_name
         self.party_type = party_type
         self.party_address = party_address
-        self.account_details = account_details
+        self.account_details = account_details if account_details else []
         self.plaid_processor_token = plaid_processor_token
-        self.routing_details = routing_details
+        self.routing_details = routing_details if routing_details else []
         self.accounting_category_id = accounting_category_id
         self.accounting_ledger_class_id = accounting_ledger_class_id
         self.currency = currency
@@ -53,37 +54,39 @@ class PaymentOrderRequest:
         self.ultimate_originating_party_identifier = ultimate_originating_party_identifier
 
     def to_json(self):
+        account_details_json = [account_detail.to_json() for account_detail in self.account_details]
+        routing_details_json = [routing_detail.to_json() for routing_detail in self.routing_details]
         return {
             'type': self.type,
-            'fallback_type ': self.fallback_type ,
+            'fallback_type ': self.fallback_type,
             'subtype': self.subtype,
             'amount': self.amount,
             'direction': self.direction,
             'originating_account_id': self.originating_account_id,
             'receiving_account_id ': self.receiving_account_id ,
             'account_type': self.account_type,
-            'party_name': self.party_name,
-            'party_type': self.party_type,
-            'party_address': self.party_address,
-            'account_details': self.account_details,
-            'plaid_processor_token': self.plaid_processor_token,
-            'routing_details': self.routing_details,
-            'accounting_category_id': self.accounting_category_id,
-            'accounting_ledger_class_id': self.accounting_ledger_class_id,
-            'currency': self.currency,
-            'effective_date': self.effective_date,
-            'priority': self.priority,
-            'description': self.description,
-            'statement_descriptor': self.statement_descriptor,
-            'remittance_information': self.remittance_information,
-            'purpose': self.purpose,
-            'line_items': self.line_items,
-            'metadata': self.metadata,
-            'charge_bearer': self.charge_bearer,
-            'foreign_exchange_indicator': self.foreign_exchange_indicator,
-            'foreign_exchange_contract': self.foreign_exchange_contract,
-            'nsf_protected': self.nsf_protected,
-            'originating_party_name': self.originating_party_name,
-            'ultimate_originating_party_name': self.ultimate_originating_party_name,
-            'ultimate_originating_party_identifier': self.ultimate_originating_party_identifier,
+            # # 'party_name': self.party_name,
+            # # 'party_type': self.party_type,
+            # # 'party_address': self.party_address,
+            # # 'account_details': account_details_json,
+            # # 'plaid_processor_token': self.plaid_processor_token,
+            # # 'routing_details': routing_details_json,
+            # # 'accounting_category_id': self.accounting_category_id,
+            # # 'accounting_ledger_class_id': self.accounting_ledger_class_id,
+            # 'currency': self.currency,
+            # # 'effective_date': self.effective_date,
+            # # 'priority': self.priority,
+            # # 'description': self.description,
+            # # 'statement_descriptor': self.statement_descriptor,
+            # # 'remittance_information': self.remittance_information,
+            # # 'purpose': self.purpose,
+            # # 'line_items': self.line_items,
+            # # 'metadata': self.metadata,
+            # # 'charge_bearer': self.charge_bearer,
+            # # 'foreign_exchange_indicator': self.foreign_exchange_indicator,
+            # # 'foreign_exchange_contract': self.foreign_exchange_contract,
+            # # 'nsf_protected': self.nsf_protected,
+            # # 'originating_party_name': self.originating_party_name,
+            # # 'ultimate_originating_party_name': self.ultimate_originating_party_name,
+            # # 'ultimate_originating_party_identifier': self.ultimate_originating_party_identifier,
         }

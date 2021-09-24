@@ -26,5 +26,7 @@ class CounterPartyResponse:
         routing_details = self.json.get("routing_details")
         return [RoutingDetailsResponse(routing_detail) for routing_detail in routing_details]
 
-
+    @property
+    def metadata(self) -> str:
+        return self.json.get("metadata")
 

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 import requests
 from requests.auth import HTTPBasicAuth
@@ -48,16 +48,33 @@ class ModernTreasury:
                 return mt_account
         return None
 
+    def list_counterparties(self, metadata: dict=None) -> List[Optional[CounterPartyResponse]]:
+        querystring = {'page': '1', 'per_page': '100'}
+        if metadata:
+            for key, value in metadata.items():
+                querystring[f'metadata[{str(key)}]'] = str(value)
+        breakpoint()
+        response = requests.get(COUNTER_PARTIES_URL, auth=self.http_basic_auth, params=querystring)
+
+        if response.ok:
+            return [CounterPartyResponse(counterparty) for counterparty in response.json()]
+        return []
+
+    def delete_counterparty_by_id(self, id:str) -> bool:
+        result = requests.request("DELETE", f'{COUNTER_PARTIES_URL}/{id}', auth=self.http_basic_auth)
+        return True if result.ok else False
+
     def get_counter_party_account_by_id(self, id:str) -> Optional[CounterPartyResponse]:
         result = requests.get(url=f'{COUNTER_PARTIES_URL}/{id}', auth=self.http_basic_auth)
         if result.ok:
             return CounterPartyResponse(result.json())
         return None
 
-    def create_counter_party_account(self, counter_party_request: CounterPartyRequest) -> CounterPartyResponse:
+    def create_counter_party_account(self, counter_party_request: CounterPartyRequest) -> Optional[CounterPartyResponse]:
         response = self._post(url=COUNTER_PARTIES_URL, payload=counter_party_request.to_json())
-        counter_party_response = CounterPartyResponse(response)
-        return counter_party_response
+        if response:
+            return CounterPartyResponse(response)
+        return None
 
     # Internal Accounts
     def get_internal_accounts(self):

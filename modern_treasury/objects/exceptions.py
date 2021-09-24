@@ -1,0 +1,2 @@
+class ModernTreasuryException(Exception):
+    pass
