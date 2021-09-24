@@ -6,6 +6,7 @@ modern_treasury/__init__.py
 modern_treasury/auth.py
 modern_treasury/modern_treasury.py
 modern_treasury/objects/__init__.py
+modern_treasury/objects/exceptions.py
 modern_treasury/objects/shared.py
 modern_treasury/objects/request/__init__.py
 modern_treasury/objects/request/account.py
