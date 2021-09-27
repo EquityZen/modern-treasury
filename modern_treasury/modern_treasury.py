@@ -3,12 +3,15 @@ from typing import Optional, List
 import requests
 from requests.auth import HTTPBasicAuth
 
+from modern_treasury import AccountDetailsResponse, AccountDetailsRequest
 from modern_treasury.objects.request.counterparty import CounterPartyRequest
 from modern_treasury.objects.request.expected_payment import ExpectedPaymentRequest
+from modern_treasury.objects.request.external_account import ExternalAccountRequest
 from modern_treasury.objects.request.payment_order import PaymentOrderRequest
 from modern_treasury.objects.request.virtual_account import VirtualAccountRequest
 from modern_treasury.objects.response.counterparty import CounterPartyResponse
 from modern_treasury.objects.response.expected_payment import ExpectedPaymentResponse
+from modern_treasury.objects.response.external_account import ExternalAccountResponse
 from modern_treasury.objects.response.internal_account import InternalAccountResponse
 from modern_treasury.objects.response.payment import PaymentOrderResponse
 from modern_treasury.objects.response.virtual_account import VirtualAccountResponse
@@ -18,6 +21,7 @@ COUNTER_PARTIES_URL = 'https://app.moderntreasury.com/api/counterparties'
 EXPECTED_PAYMENTS_URL = 'https://app.moderntreasury.com/api/expected_payments'
 PAYMENT_ORDER_URL = 'https://app.moderntreasury.com/api/payment_orders'
 VIRTUAL_ACCOUNT_URL = 'https://app.moderntreasury.com/api/virtual_accounts'
+EXTERNAL_ACCOUNT_URL = 'https://app.moderntreasury.com/api/external_accounts'
 
 
 class ModernTreasury:
@@ -28,11 +32,12 @@ class ModernTreasury:
         self.organization_id = organization_id
         self.api_key = api_key
         self.http_basic_auth = HTTPBasicAuth(username=self.organization_id, password=self.api_key)
+        self.headers = {"Content-Type": "application/json"}
 
     def _post(self, url:str, payload: dict) -> dict:
         response = requests.post(url=url,
                                  auth=self.http_basic_auth,
-                                 headers={'Content-Type': 'application/json'},
+                                 headers=self.headers,
                                  json=payload)
         return response.json()
 
@@ -47,6 +52,14 @@ class ModernTreasury:
             if mt_account.name == name:
                 return mt_account
         return None
+
+    def update_counterparty(self, counter_party_request: CounterPartyRequest, counter_party_id:str):
+        payload = counter_party_request.to_json()
+        requests.request("PATCH",
+                         url=f'{COUNTER_PARTIES_URL}/{id}',
+                         json=payload,
+                         headers=self.headers,
+                         auth=self.http_basic_auth)
 
     def list_counterparties(self, metadata: dict=None) -> List[Optional[CounterPartyResponse]]:
         querystring = {'page': '1', 'per_page': '100'}
@@ -64,16 +77,47 @@ class ModernTreasury:
         result = requests.request("DELETE", f'{COUNTER_PARTIES_URL}/{id}', auth=self.http_basic_auth)
         return True if result.ok else False
 
-    def get_counter_party_account_by_id(self, id:str) -> Optional[CounterPartyResponse]:
+    def get_counterparty_account_by_id(self, id:str) -> Optional[CounterPartyResponse]:
         result = requests.get(url=f'{COUNTER_PARTIES_URL}/{id}', auth=self.http_basic_auth)
         if result.ok:
             return CounterPartyResponse(result.json())
         return None
 
-    def create_counter_party_account(self, counter_party_request: CounterPartyRequest) -> Optional[CounterPartyResponse]:
-        response = self._post(url=COUNTER_PARTIES_URL, payload=counter_party_request.to_json())
+    def create_counterparty_account(self, counterparty_request: CounterPartyRequest) -> Optional[CounterPartyResponse]:
+        response = self._post(url=COUNTER_PARTIES_URL, payload=counterparty_request.to_json())
         if response:
             return CounterPartyResponse(response)
+        return None
+
+    # external account
+    def update_external_account(self, external_account_request: ExternalAccountRequest,
+                                external_account_id:str) -> Optional[ExternalAccountResponse]:
+        payload = external_account_request.to_json()
+        result = requests.request("PATCH",
+                                  url=f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}',
+                                  json=payload,
+                                  headers=self.headers,
+                                  auth=self.http_basic_auth)
+        if result:
+            return ExternalAccountResponse(result.json())
+        return None
+
+    def delete_account_details(self, external_account_id:str, account_details_id:str):
+        url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/account_details/{account_details_id}'
+        result = requests.request("DELETE",
+                                  url=url,
+                                  headers=self.headers,
+                                  auth=self.http_basic_auth)
+        return result
+
+    def create_account_details(self, account_details: AccountDetailsRequest,
+                               external_account_id: str) -> Optional[AccountDetailsResponse]:
+        url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/account_details'
+        payload = account_details.to_json()
+        result = self._post(url=url, payload=payload)
+        breakpoint()
+        if result:
+            return AccountDetailsResponse(result)
         return None
 
     # Internal Accounts
@@ -106,7 +150,6 @@ class ModernTreasury:
         return None
 
     def update_expected_payment(self, id:str, expected_payment_request: ExpectedPaymentRequest) -> ExpectedPaymentResponse:
-        headers = {"Content-Type": "application/json"}
         response = requests.request("PATCH", f'{EXPECTED_PAYMENTS_URL}/{id}',
                                     payload=expected_payment_request.to_json(),
                                     headers=headers)
