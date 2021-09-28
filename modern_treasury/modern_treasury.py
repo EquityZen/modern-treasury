@@ -58,7 +58,7 @@ class ModernTreasury:
     def update_counterparty(self, counter_party_request: CounterPartyRequest, counter_party_id:str):
         payload = counter_party_request.to_json()
         requests.request("PATCH",
-                         url=f'{COUNTER_PARTIES_URL}/{id}',
+                         url=f'{COUNTER_PARTIES_URL}/{counter_party_id}',
                          json=payload,
                          headers=self.headers,
                          auth=self.http_basic_auth)

@@ -27,7 +27,6 @@ modern_treasury/objects/response/counterparty.py
 modern_treasury/objects/response/expected_payment.py
 modern_treasury/objects/response/external_account.py
 modern_treasury/objects/response/internal_account.py
-modern_treasury/objects/response/payment.py
 modern_treasury/objects/response/payment_order.py
 modern_treasury/objects/response/routing_details.py
 modern_treasury/objects/response/virtual_account.py

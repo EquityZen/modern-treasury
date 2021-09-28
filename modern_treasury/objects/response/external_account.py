@@ -1,4 +1,4 @@
-from modern_treasury import AddressRequest, AddressResponse, AccountDetailsResponse
+from modern_treasury import AddressResponse, AccountDetailsResponse
 from modern_treasury.objects.response.routing_details import RoutingDetailsResponse
 
 

@@ -1,10 +1,10 @@
-from modern_treasury import AddressRequest
+
 
 
 class ExternalAccountRequest():
     def __init__(self,
                  account_type:str=None,
-                 party_address: AddressRequest=None):
+                 party_address=None): # AddressRequest
         self.account_type = account_type
         self.party_address = party_address
 
