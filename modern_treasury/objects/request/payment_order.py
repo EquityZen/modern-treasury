@@ -1,8 +1,7 @@
 from typing import List
 
-from modern_treasury.objects.exceptions import ModernTreasuryException
-from modern_treasury.objects.request.account_details import AccountDetailsRequest
-from modern_treasury.objects.request.routing_details import RoutingDetailsRequest
+from .account_details import AccountDetailsRequest
+from .routing_details import RoutingDetailsRequest
 
 
 class PaymentOrderRequest:

@@ -1,4 +1,4 @@
-from modern_treasury.objects.response.address import AddressResponse
+from .address import AddressResponse
 
 
 class RoutingDetailsResponse:

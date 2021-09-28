@@ -1,7 +1,7 @@
 import json
 from typing import List
 
-from modern_treasury.objects.request.account import AccountRequest
+from .account import AccountRequest
 
 
 class CounterPartyRequest:

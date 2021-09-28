@@ -1,7 +1,7 @@
 from typing import List
 
-from modern_treasury.objects.response.account import AccountResponse
-from modern_treasury.objects.response.routing_details import RoutingDetailsResponse
+from .account import AccountResponse
+from .routing_details import RoutingDetailsResponse
 
 
 class CounterPartyResponse:

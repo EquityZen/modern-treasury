@@ -1,4 +1,4 @@
-from modern_treasury.objects.response.routing_details import RoutingDetailsResponse
+from .routing_details import RoutingDetailsResponse
 
 
 class PaymentOrderResponse:

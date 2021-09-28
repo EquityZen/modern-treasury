@@ -1,6 +1,6 @@
 from typing import List
 
-from modern_treasury.objects.request.account_details import AccountDetailsRequest
+from .account_details import AccountDetailsRequest
 
 
 class VirtualAccountRequest:

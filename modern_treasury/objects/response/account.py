@@ -1,9 +1,7 @@
 from typing import List
 
-from modern_treasury.objects.request.routing_details import RoutingDetailsRequest
-from modern_treasury.objects.response.account_details import AccountDetailsResponse
-
-from modern_treasury.objects.response.routing_details import RoutingDetailsResponse
+from .account_details import AccountDetailsResponse
+from .routing_details import RoutingDetailsResponse
 
 
 class AccountResponse:
@@ -27,7 +25,7 @@ class AccountResponse:
         return account_details_list
 
     @property
-    def routing_details(self) -> List[RoutingDetailsRequest]:
+    def routing_details(self) -> List[RoutingDetailsResponse]:
         routing_details_list = []
         routing_details = self.json.get('routing_details')
         if routing_details:

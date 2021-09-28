@@ -1,8 +1,3 @@
-from typing import Optional
-
-from modern_treasury.objects.request.line_item import LineItemRequest
-
-
 class ExpectedPaymentRequest:
     def __init__(self, amount_upper_bound: int, amount_lower_bound: int, internal_account_id: str,
                  direction: str, type: str= None, currency: str = None,

@@ -1,6 +1,6 @@
-from modern_treasury.objects.response.account_details import AccountDetailsResponse
-from modern_treasury.objects.response.address import AddressResponse
-from modern_treasury.objects.response.routing_details import RoutingDetailsResponse
+from .account_details import AccountDetailsResponse
+from .address import AddressResponse
+from .routing_details import RoutingDetailsResponse
 
 
 class InternalAccountResponse:

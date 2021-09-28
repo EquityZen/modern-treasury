@@ -1,4 +1,4 @@
-from modern_treasury.objects.request.address import AddressRequest
+from .address import AddressRequest
 
 
 class ExternalAccountRequest():
