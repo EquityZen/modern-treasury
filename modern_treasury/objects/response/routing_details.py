@@ -6,6 +6,10 @@ class RoutingDetailsResponse:
         self.json = json
 
     @property
+    def id(self):
+        return self.json.get('id')
+
+    @property
     def bank_name(self):
         return self.json.get('bank_name')
 

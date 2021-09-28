@@ -8,12 +8,14 @@ from modern_treasury.objects.request.counterparty import CounterPartyRequest
 from modern_treasury.objects.request.expected_payment import ExpectedPaymentRequest
 from modern_treasury.objects.request.external_account import ExternalAccountRequest
 from modern_treasury.objects.request.payment_order import PaymentOrderRequest
+from modern_treasury.objects.request.routing_details import RoutingDetailsRequest
 from modern_treasury.objects.request.virtual_account import VirtualAccountRequest
 from modern_treasury.objects.response.counterparty import CounterPartyResponse
 from modern_treasury.objects.response.expected_payment import ExpectedPaymentResponse
 from modern_treasury.objects.response.external_account import ExternalAccountResponse
 from modern_treasury.objects.response.internal_account import InternalAccountResponse
 from modern_treasury.objects.response.payment import PaymentOrderResponse
+from modern_treasury.objects.response.routing_details import RoutingDetailsResponse
 from modern_treasury.objects.response.virtual_account import VirtualAccountResponse
 
 INTERNAL_ACCOUNT_URL = 'https://app.moderntreasury.com/api/internal_accounts'
@@ -66,7 +68,6 @@ class ModernTreasury:
         if metadata:
             for key, value in metadata.items():
                 querystring[f'metadata[{str(key)}]'] = str(value)
-        breakpoint()
         response = requests.get(COUNTER_PARTIES_URL, auth=self.http_basic_auth, params=querystring)
 
         if response.ok:
@@ -102,6 +103,7 @@ class ModernTreasury:
             return ExternalAccountResponse(result.json())
         return None
 
+    # account details
     def delete_account_details(self, external_account_id:str, account_details_id:str):
         url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/account_details/{account_details_id}'
         result = requests.request("DELETE",
@@ -115,9 +117,30 @@ class ModernTreasury:
         url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/account_details'
         payload = account_details.to_json()
         result = self._post(url=url, payload=payload)
-        breakpoint()
         if result:
             return AccountDetailsResponse(result)
+        return None
+
+    # routing details
+    def get_routing_details_by_id(self, external_account_id, routing_details_id):
+        url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/routing_details/{routing_details_id}'
+        response= requests.get(url=url, auth=self.http_basic_auth)
+        return response.json()
+
+    def delete_routing_details(self, external_account_id:str, routing_details_id:str):
+        url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/routing_details/{routing_details_id}'
+        result = requests.request("DELETE",
+                                  url=url,
+                                  auth=self.http_basic_auth)
+        return result
+
+    def create_routing_details(self, routing_details: RoutingDetailsRequest,
+                               external_account_id: str) -> Optional[RoutingDetailsResponse]:
+        url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/routing_details'
+        payload = routing_details.to_json()
+        result = self._post(url=url, payload=payload)
+        if result:
+            return RoutingDetailsResponse(result)
         return None
 
     # Internal Accounts
