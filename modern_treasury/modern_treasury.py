@@ -3,7 +3,7 @@ from typing import Optional, List
 import requests
 from requests.auth import HTTPBasicAuth
 
-from modern_treasury import AccountDetailsResponse, AccountDetailsRequest
+from modern_treasury import AccountDetailsResponse, AccountDetailsRequest, PaymentOrderResponse
 from modern_treasury.objects.request.counterparty import CounterPartyRequest
 from modern_treasury.objects.request.expected_payment import ExpectedPaymentRequest
 from modern_treasury.objects.request.external_account import ExternalAccountRequest
@@ -14,7 +14,7 @@ from modern_treasury.objects.response.counterparty import CounterPartyResponse
 from modern_treasury.objects.response.expected_payment import ExpectedPaymentResponse
 from modern_treasury.objects.response.external_account import ExternalAccountResponse
 from modern_treasury.objects.response.internal_account import InternalAccountResponse
-from modern_treasury.objects.response.payment import PaymentOrderResponse
+
 from modern_treasury.objects.response.routing_details import RoutingDetailsResponse
 from modern_treasury.objects.response.virtual_account import VirtualAccountResponse
 
