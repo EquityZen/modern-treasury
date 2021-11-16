@@ -7,12 +7,14 @@ from modern_treasury import AccountDetailsResponse, AccountDetailsRequest, Payme
 from modern_treasury.objects.request.counterparty import CounterPartyRequest
 from modern_treasury.objects.request.expected_payment import ExpectedPaymentRequest
 from modern_treasury.objects.request.external_account import ExternalAccountRequest
+from modern_treasury.objects.request.incoming_payment_detail import IncomingPaymentDetailRequest
 from modern_treasury.objects.request.payment_order import PaymentOrderRequest
 from modern_treasury.objects.request.routing_details import RoutingDetailsRequest
 from modern_treasury.objects.request.virtual_account import VirtualAccountRequest
 from modern_treasury.objects.response.counterparty import CounterPartyResponse
 from modern_treasury.objects.response.expected_payment import ExpectedPaymentResponse
 from modern_treasury.objects.response.external_account import ExternalAccountResponse
+from modern_treasury.objects.response.incoming_payment_detail import IncomingPaymentDetailResponse
 from modern_treasury.objects.response.internal_account import InternalAccountResponse
 
 from modern_treasury.objects.response.routing_details import RoutingDetailsResponse
@@ -25,6 +27,7 @@ PAYMENT_ORDER_URL = 'https://app.moderntreasury.com/api/payment_orders'
 VIRTUAL_ACCOUNT_URL = 'https://app.moderntreasury.com/api/virtual_accounts'
 EXTERNAL_ACCOUNT_URL = 'https://app.moderntreasury.com/api/external_accounts'
 
+INCOMING_PAYMENT_DETAIL_URL = 'https://app.moderntreasury.com/api/simulations/incoming_payment_details/create_async'
 
 class ModernTreasury:
     def create(organization_id:str, api_key:str):
@@ -37,6 +40,7 @@ class ModernTreasury:
         self.headers = {"Content-Type": "application/json"}
 
     def _post(self, url:str, payload: dict) -> dict:
+        breakpoint()
         response = requests.post(url=url,
                                  auth=self.http_basic_auth,
                                  headers=self.headers,
@@ -203,4 +207,12 @@ class ModernTreasury:
         result = requests.get(url=f'{VIRTUAL_ACCOUNT_URL}/{id}', auth=self.http_basic_auth)
         if result.ok:
             return VirtualAccountResponse(result.json())
+        return None
+
+    def post_incoming_payment_detail(self, incoming_payment_detail_request: IncomingPaymentDetailRequest)\
+            -> Optional[IncomingPaymentDetailResponse]:
+        response = self._post(url=INCOMING_PAYMENT_DETAIL_URL,
+                              payload=incoming_payment_detail_request.to_json())
+        if response:
+            return IncomingPaymentDetailResponse(response)
         return None

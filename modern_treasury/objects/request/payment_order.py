@@ -7,6 +7,7 @@ from .routing_details import RoutingDetailsRequest
 class PaymentOrderRequest:
     def __init__(self, type:str, amount:int, direction, originating_account_id=None,
                  subtype:str = None, fallback_type:str = None, receiving_account_id:str = None,
+                 receiving_account:AccountDetailsRequest=None,
                  account_type:str = None, party_name:str = None,
                  party_type:str = None, party_address:str = None, account_details: List[AccountDetailsRequest] = None,
                  plaid_processor_token:str = None, routing_details: List[RoutingDetailsRequest] = None,
@@ -51,18 +52,19 @@ class PaymentOrderRequest:
         self.originating_party_name = originating_party_name
         self.ultimate_originating_party_name = ultimate_originating_party_name
         self.ultimate_originating_party_identifier = ultimate_originating_party_identifier
+        self.receiving_account = receiving_account
 
     def to_json(self):
         account_details_json = [account_detail.to_json() for account_detail in self.account_details]
         routing_details_json = [routing_detail.to_json() for routing_detail in self.routing_details]
-        return {
+        request = {
             'type': self.type,
             'fallback_type ': self.fallback_type,
             'subtype': self.subtype,
             'amount': self.amount,
             'direction': self.direction,
             'originating_account_id': self.originating_account_id,
-            'receiving_account_id ': self.receiving_account_id ,
+            'receiving_account_id': self.receiving_account_id ,
             'account_type': self.account_type,
             # # 'party_name': self.party_name,
             # # 'party_type': self.party_type,
@@ -89,3 +91,8 @@ class PaymentOrderRequest:
             # # 'ultimate_originating_party_name': self.ultimate_originating_party_name,
             # # 'ultimate_originating_party_identifier': self.ultimate_originating_party_identifier,
         }
+        if self.receiving_account:
+            request['receiving_account'] = self.receiving_account.to_json()
+        if self.metadata:
+            request['metadata'] = self.metadata
+        return request
