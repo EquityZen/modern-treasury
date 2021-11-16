@@ -40,7 +40,6 @@ class ModernTreasury:
         self.headers = {"Content-Type": "application/json"}
 
     def _post(self, url:str, payload: dict) -> dict:
-        breakpoint()
         response = requests.post(url=url,
                                  auth=self.http_basic_auth,
                                  headers=self.headers,
@@ -179,7 +178,7 @@ class ModernTreasury:
     def update_expected_payment(self, id:str, expected_payment_request: ExpectedPaymentRequest) -> ExpectedPaymentResponse:
         response = requests.request("PATCH", f'{EXPECTED_PAYMENTS_URL}/{id}',
                                     payload=expected_payment_request.to_json(),
-                                    headers=headers)
+                                    headers=self.headers)
         return ExpectedPaymentResponse(response)
 
     # Payment Orders
