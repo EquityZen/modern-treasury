@@ -15,6 +15,7 @@ modern_treasury/objects/request/address.py
 modern_treasury/objects/request/counterparty.py
 modern_treasury/objects/request/expected_payment.py
 modern_treasury/objects/request/external_account.py
+modern_treasury/objects/request/incoming_payment_detail.py
 modern_treasury/objects/request/line_item.py
 modern_treasury/objects/request/payment_order.py
 modern_treasury/objects/request/routing_details.py
@@ -26,6 +27,7 @@ modern_treasury/objects/response/address.py
 modern_treasury/objects/response/counterparty.py
 modern_treasury/objects/response/expected_payment.py
 modern_treasury/objects/response/external_account.py
+modern_treasury/objects/response/incoming_payment_detail.py
 modern_treasury/objects/response/internal_account.py
 modern_treasury/objects/response/payment_order.py
 modern_treasury/objects/response/routing_details.py
