@@ -4,6 +4,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 from modern_treasury import AccountDetailsResponse, AccountDetailsRequest, PaymentOrderResponse
+from modern_treasury.objects.exceptions import ModernTreasuryException
 from modern_treasury.objects.request.counterparty import CounterPartyRequest
 from modern_treasury.objects.request.expected_payment import ExpectedPaymentRequest
 from modern_treasury.objects.request.external_account import ExternalAccountRequest
@@ -29,6 +30,7 @@ EXTERNAL_ACCOUNT_URL = 'https://app.moderntreasury.com/api/external_accounts'
 
 INCOMING_PAYMENT_DETAIL_URL = 'https://app.moderntreasury.com/api/simulations/incoming_payment_details/create_async'
 
+
 class ModernTreasury:
     def create(organization_id:str, api_key:str):
         return ModernTreasury(organization_id=organization_id, api_key=api_key)
@@ -40,17 +42,44 @@ class ModernTreasury:
         self.headers = {"Content-Type": "application/json"}
 
     def _post(self, url:str, payload: dict) -> dict:
-        breakpoint()
         response = requests.post(url=url,
                                  auth=self.http_basic_auth,
                                  headers=self.headers,
                                  json=payload)
+        if not response.ok:
+            raise ModernTreasuryException(response.status_code, response.reason, url, response.json())
         return response.json()
+
+    def _get(self, url:str, params = None) -> dict:
+        response = requests.get(url=url,
+                                auth=self.http_basic_auth,
+                                headers=self.headers,
+                                params=params)
+        if not response.ok:
+            raise ModernTreasuryException(response.status_code, response.reason, url, response.json())
+        return response.json()
+
+    def _patch(self, url:str, payload: dict) -> dict:
+        response = requests.request("PATCH",
+                                    url=url,
+                                    json=payload,
+                                    headers=self.headers,
+                                    auth=self.http_basic_auth)
+        if not response.ok:
+            raise ModernTreasuryException(response.status_code, response.reason, url, response)
+        return response.json()
+
+    def _delete(self, url:str) -> dict:
+        response = requests.request("DELETE",
+                                    url=url,
+                                    headers=self.headers,
+                                    auth=self.http_basic_auth)
+        if not response.ok:
+            raise ModernTreasuryException(response.status_code, response.reason, url, response)
 
     # Counter Parties
     def get_counter_parties(self):
-        response= requests.get(COUNTER_PARTIES_URL, auth=self.http_basic_auth)
-        return response.json()
+        return self._get(url=COUNTER_PARTIES_URL)
 
     def get_counter_party_account_by_name(self, name) -> Optional[CounterPartyResponse]:
         for account in self.get_counter_parties():
@@ -61,96 +90,71 @@ class ModernTreasury:
 
     def update_counterparty(self, counter_party_request: CounterPartyRequest, counter_party_id:str):
         payload = counter_party_request.to_json()
-        requests.request("PATCH",
-                         url=f'{COUNTER_PARTIES_URL}/{counter_party_id}',
-                         json=payload,
-                         headers=self.headers,
-                         auth=self.http_basic_auth)
+        self._patch(url=f'{COUNTER_PARTIES_URL}/{counter_party_id}',
+                    payload=payload)
 
     def list_counterparties(self, metadata: dict=None) -> List[Optional[CounterPartyResponse]]:
         querystring = {'page': '1', 'per_page': '100'}
         if metadata:
             for key, value in metadata.items():
                 querystring[f'metadata[{str(key)}]'] = str(value)
-        response = requests.get(COUNTER_PARTIES_URL, auth=self.http_basic_auth, params=querystring)
-
-        if response.ok:
-            return [CounterPartyResponse(counterparty) for counterparty in response.json()]
-        return []
+        
+        try:
+            response = self._get(url=COUNTER_PARTIES_URL, params=querystring)
+            return [CounterPartyResponse(counterparty) for counterparty in response]
+        except:
+            return []
 
     def delete_counterparty_by_id(self, id:str) -> bool:
-        result = requests.request("DELETE", f'{COUNTER_PARTIES_URL}/{id}', auth=self.http_basic_auth)
-        return True if result.ok else False
+        return self._delete(url=f'{COUNTER_PARTIES_URL}/{id}')
 
-    def get_counterparty_account_by_id(self, id:str) -> Optional[CounterPartyResponse]:
-        result = requests.get(url=f'{COUNTER_PARTIES_URL}/{id}', auth=self.http_basic_auth)
-        if result.ok:
-            return CounterPartyResponse(result.json())
-        return None
+    def get_counterparty_account_by_id(self, id:str) -> CounterPartyResponse:
+        return CounterPartyResponse(self._get(url=f'{COUNTER_PARTIES_URL}/{id}'))
 
-    def create_counterparty_account(self, counterparty_request: CounterPartyRequest) -> Optional[CounterPartyResponse]:
-        response = self._post(url=COUNTER_PARTIES_URL, payload=counterparty_request.to_json())
-        if response:
-            return CounterPartyResponse(response)
-        return None
+    def create_counterparty_account(self, counterparty_request: CounterPartyRequest) -> CounterPartyResponse:
+        return CounterPartyResponse(self._post(url=COUNTER_PARTIES_URL, payload=counterparty_request.to_json()))
 
     # external account
     def update_external_account(self, external_account_request: ExternalAccountRequest,
-                                external_account_id:str) -> Optional[ExternalAccountResponse]:
+                                external_account_id:str) -> ExternalAccountResponse:
         payload = external_account_request.to_json()
-        result = requests.request("PATCH",
-                                  url=f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}',
-                                  json=payload,
-                                  headers=self.headers,
-                                  auth=self.http_basic_auth)
+        result = self._patch(url=f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}',
+                             payload=payload)
         if result:
-            return ExternalAccountResponse(result.json())
+            return ExternalAccountResponse(result)
         return None
 
     # account details
     def delete_account_details(self, external_account_id:str, account_details_id:str):
         url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/account_details/{account_details_id}'
-        result = requests.request("DELETE",
-                                  url=url,
-                                  headers=self.headers,
-                                  auth=self.http_basic_auth)
+        result = self._delete(url=url)
         return result
 
     def create_account_details(self, account_details: AccountDetailsRequest,
-                               external_account_id: str) -> Optional[AccountDetailsResponse]:
+                               external_account_id: str) -> AccountDetailsResponse:
         url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/account_details'
         payload = account_details.to_json()
-        result = self._post(url=url, payload=payload)
-        if result:
-            return AccountDetailsResponse(result)
-        return None
+        return AccountDetailsResponse(self._post(url=url, payload=payload))
 
     # routing details
     def get_routing_details_by_id(self, external_account_id, routing_details_id):
         url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/routing_details/{routing_details_id}'
-        response= requests.get(url=url, auth=self.http_basic_auth)
-        return response.json()
+        return self._get(url=url)
 
     def delete_routing_details(self, external_account_id:str, routing_details_id:str):
         url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/routing_details/{routing_details_id}'
-        result = requests.request("DELETE",
-                                  url=url,
-                                  auth=self.http_basic_auth)
+        result = self._delete(url=url)
         return result
 
     def create_routing_details(self, routing_details: RoutingDetailsRequest,
-                               external_account_id: str) -> Optional[RoutingDetailsResponse]:
+                               external_account_id: str) -> RoutingDetailsResponse:
         url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/routing_details'
         payload = routing_details.to_json()
-        result = self._post(url=url, payload=payload)
-        if result:
-            return RoutingDetailsResponse(result)
-        return None
+        return RoutingDetailsResponse(self._post(url=url, payload=payload))
 
     # Internal Accounts
     def get_internal_accounts(self):
-        response = requests.get(url=INTERNAL_ACCOUNT_URL, auth=self.http_basic_auth)
-        result = response.json()
+        result = self._get(url=INTERNAL_ACCOUNT_URL)
 
         internal_accounts = []
         for account in result:
@@ -158,61 +162,43 @@ class ModernTreasury:
         return internal_accounts
 
     def get_internal_account_by_id(self, id:str) -> Optional[InternalAccountResponse]:
-        result = requests.get(url=f'{INTERNAL_ACCOUNT_URL}/{id}', auth=self.http_basic_auth)
-        if result.ok:
-            return InternalAccountResponse(result.json())
-        return None
+        result = self._get(url=f'{INTERNAL_ACCOUNT_URL}/{id}')
+        return InternalAccountResponse(result)
 
     # Expected Payments
-    def create_expected_payment(self, expected_payment_request: ExpectedPaymentRequest) -> Optional[ExpectedPaymentResponse]:
+    def create_expected_payment(self, expected_payment_request: ExpectedPaymentRequest) -> ExpectedPaymentResponse:
         response = self._post(url=EXPECTED_PAYMENTS_URL, payload=expected_payment_request.to_json())
-        if response:
-            return ExpectedPaymentResponse(response)
-        return None
+        return ExpectedPaymentResponse(response)
 
     def get_expected_payment_by_id(self, id:str) -> Optional[ExpectedPaymentResponse]:
         result = requests.get(url=f'{EXPECTED_PAYMENTS_URL}/{id}', auth=self.http_basic_auth)
-        if result.ok:
-            return ExpectedPaymentResponse(result.json())
-        return None
+        return ExpectedPaymentResponse(result.json())
 
     def update_expected_payment(self, id:str, expected_payment_request: ExpectedPaymentRequest) -> ExpectedPaymentResponse:
-        response = requests.request("PATCH", f'{EXPECTED_PAYMENTS_URL}/{id}',
-                                    payload=expected_payment_request.to_json(),
-                                    headers=headers)
+        response = self._patch(url=f'{EXPECTED_PAYMENTS_URL}/{id}', payload=expected_payment_request.to_json())
         return ExpectedPaymentResponse(response)
 
     # Payment Orders
-    def create_payment_order(self, payment_order_request: PaymentOrderRequest) -> Optional[PaymentOrderResponse]:
+    def create_payment_order(self, payment_order_request: PaymentOrderRequest) -> PaymentOrderResponse:
         response = self._post(url=PAYMENT_ORDER_URL, payload=payment_order_request.to_json())
-        if response:
-            return PaymentOrderResponse(response)
-        return None
+        return PaymentOrderResponse(response)
 
     def get_payment_order(self):
-        result = requests.get(url=f'{PAYMENT_ORDER_URL}/{id}', auth=self.http_basic_auth)
-        if result.ok:
-            return ExpectedPaymentResponse(result.json())
-        return None
+        result = self._get(url=f'{PAYMENT_ORDER_URL}/{id}')
+        return ExpectedPaymentResponse(result.json())
 
     # Virtual Account
     def create_virtual_account(self, virtual_account_request: VirtualAccountRequest):
         response = self._post(url=VIRTUAL_ACCOUNT_URL,
                               payload=virtual_account_request.to_json())
-        if response:
-            return VirtualAccountResponse(response)
-        return None
+        return VirtualAccountResponse(response)
 
     def get_virtual_account_by_id(self, id:str):
         result = requests.get(url=f'{VIRTUAL_ACCOUNT_URL}/{id}', auth=self.http_basic_auth)
-        if result.ok:
-            return VirtualAccountResponse(result.json())
-        return None
+        return VirtualAccountResponse(result.json())
 
     def post_incoming_payment_detail(self, incoming_payment_detail_request: IncomingPaymentDetailRequest)\
-            -> Optional[IncomingPaymentDetailResponse]:
+            -> IncomingPaymentDetailResponse:
         response = self._post(url=INCOMING_PAYMENT_DETAIL_URL,
                               payload=incoming_payment_detail_request.to_json())
-        if response:
-            return IncomingPaymentDetailResponse(response)
-        return None
+        return IncomingPaymentDetailResponse(response)
