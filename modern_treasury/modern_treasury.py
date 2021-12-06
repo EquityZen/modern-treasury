@@ -98,7 +98,7 @@ class ModernTreasury:
         if metadata:
             for key, value in metadata.items():
                 querystring[f'metadata[{str(key)}]'] = str(value)
-        
+
         try:
             response = self._get(url=COUNTER_PARTIES_URL, params=querystring)
             return [CounterPartyResponse(counterparty) for counterparty in response]
@@ -164,6 +164,11 @@ class ModernTreasury:
     def get_internal_account_by_id(self, id:str) -> Optional[InternalAccountResponse]:
         result = self._get(url=f'{INTERNAL_ACCOUNT_URL}/{id}')
         return InternalAccountResponse(result)
+
+    # External Accounts
+    def create_external_account(self, external_account_request: ExternalAccountRequest):
+        response = self._post(url=EXTERNAL_ACCOUNT_URL, payload=external_account_request.to_json())
+        return ExpectedPaymentResponse(response)
 
     # Expected Payments
     def create_expected_payment(self, expected_payment_request: ExpectedPaymentRequest) -> ExpectedPaymentResponse:
