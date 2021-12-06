@@ -170,6 +170,11 @@ class ModernTreasury:
         response = self._post(url=EXTERNAL_ACCOUNT_URL, payload=external_account_request.to_json())
         return ExpectedPaymentResponse(response)
 
+    def delete_external_account(self, external_account_id:str):
+        url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}'
+        result = self._delete(url=url)
+        return result
+
     # Expected Payments
     def create_expected_payment(self, expected_payment_request: ExpectedPaymentRequest) -> ExpectedPaymentResponse:
         response = self._post(url=EXPECTED_PAYMENTS_URL, payload=expected_payment_request.to_json())
