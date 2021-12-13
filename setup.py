@@ -5,7 +5,7 @@ setup(
                 'modern_treasury.objects',
                 'modern_treasury.objects.request',
                 'modern_treasury.objects.response'],
-    version = '0.0.17',
+    version = '0.0.18',
     license='MIT',
     description = 'Modern Treasury Client Library',
     author = 'Issam Zeibak',
