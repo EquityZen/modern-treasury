@@ -52,16 +52,16 @@ class InternalAccountResponse:
 
     @property
     def account_details(self):
-        result = self.json.get('account_details')
-        if result:
-           return AccountDetailsResponse(json=result)
+        results = self.json.get('account_details')
+        if results:
+           return [AccountDetailsResponse(json=result) for result in results] 
         return None
 
     @property
     def routing_details(self):
-        result = self.json.get('routing_details')
-        if result:
-            return RoutingDetailsResponse(result)
+        results = self.json.get('routing_details')
+        if results:
+            return [RoutingDetailsResponse(result) for result in results]
         return None
 
     @property

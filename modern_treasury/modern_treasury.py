@@ -162,8 +162,11 @@ class ModernTreasury:
         return internal_accounts
 
     def get_internal_account_by_id(self, id:str) -> Optional[InternalAccountResponse]:
-        result = self._get(url=f'{INTERNAL_ACCOUNT_URL}/{id}')
-        return InternalAccountResponse(result)
+        if id:
+            result = self._get(url=f'{INTERNAL_ACCOUNT_URL}/{id}')
+            return InternalAccountResponse(result)
+        else:
+            raise Exception("id cannot be an empty string")
 
     # External Accounts
     def create_external_account(self, external_account_request: ExternalAccountRequest):
