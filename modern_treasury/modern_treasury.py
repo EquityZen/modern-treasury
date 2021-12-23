@@ -41,10 +41,11 @@ class ModernTreasury:
         self.http_basic_auth = HTTPBasicAuth(username=self.organization_id, password=self.api_key)
         self.headers = {"Content-Type": "application/json"}
 
-    def _post(self, url:str, payload: dict) -> dict:
+    def _post(self, url:str, payload: dict, key: str) -> dict:
+        headers = {**self.headers, "Idempotency-Key": key}
         response = requests.post(url=url,
                                  auth=self.http_basic_auth,
-                                 headers=self.headers,
+                                 headers=headers,
                                  json=payload)
         if not response.ok:
             raise ModernTreasuryException(response.status_code, response.reason, url, response.json())
@@ -111,8 +112,8 @@ class ModernTreasury:
     def get_counterparty_account_by_id(self, id:str) -> CounterPartyResponse:
         return CounterPartyResponse(self._get(url=f'{COUNTER_PARTIES_URL}/{id}'))
 
-    def create_counterparty_account(self, counterparty_request: CounterPartyRequest) -> CounterPartyResponse:
-        return CounterPartyResponse(self._post(url=COUNTER_PARTIES_URL, payload=counterparty_request.to_json()))
+    def create_counterparty_account(self, counterparty_request: CounterPartyRequest, key: str) -> CounterPartyResponse:
+        return CounterPartyResponse(self._post(url=COUNTER_PARTIES_URL, payload=counterparty_request.to_json()), key=key)
 
     # external account
     def update_external_account(self, external_account_request: ExternalAccountRequest,
@@ -131,10 +132,11 @@ class ModernTreasury:
         return result
 
     def create_account_details(self, account_details: AccountDetailsRequest,
-                               external_account_id: str) -> AccountDetailsResponse:
+                               external_account_id: str,
+                               key: str) -> AccountDetailsResponse:
         url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/account_details'
         payload = account_details.to_json()
-        return AccountDetailsResponse(self._post(url=url, payload=payload))
+        return AccountDetailsResponse(self._post(url=url, payload=payload, key=key))
 
     # routing details
     def get_routing_details_by_id(self, external_account_id, routing_details_id):
@@ -147,10 +149,11 @@ class ModernTreasury:
         return result
 
     def create_routing_details(self, routing_details: RoutingDetailsRequest,
-                               external_account_id: str) -> RoutingDetailsResponse:
+                               external_account_id: str,
+                               key: str) -> RoutingDetailsResponse:
         url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/routing_details'
         payload = routing_details.to_json()
-        return RoutingDetailsResponse(self._post(url=url, payload=payload))
+        return RoutingDetailsResponse(self._post(url=url, payload=payload, key=key))
 
     # Internal Accounts
     def get_internal_accounts(self):
@@ -169,8 +172,8 @@ class ModernTreasury:
             raise Exception("id cannot be an empty string")
 
     # External Accounts
-    def create_external_account(self, external_account_request: ExternalAccountRequest):
-        response = self._post(url=EXTERNAL_ACCOUNT_URL, payload=external_account_request.to_json())
+    def create_external_account(self, external_account_request: ExternalAccountRequest, key: str):
+        response = self._post(url=EXTERNAL_ACCOUNT_URL, payload=external_account_request.to_json(), key=key)
         return ExpectedPaymentResponse(response)
 
     def delete_external_account(self, external_account_id:str):
@@ -179,8 +182,8 @@ class ModernTreasury:
         return result
 
     # Expected Payments
-    def create_expected_payment(self, expected_payment_request: ExpectedPaymentRequest) -> ExpectedPaymentResponse:
-        response = self._post(url=EXPECTED_PAYMENTS_URL, payload=expected_payment_request.to_json())
+    def create_expected_payment(self, expected_payment_request: ExpectedPaymentRequest, key: str) -> ExpectedPaymentResponse:
+        response = self._post(url=EXPECTED_PAYMENTS_URL, payload=expected_payment_request.to_json(), key=key)
         return ExpectedPaymentResponse(response)
 
     def get_expected_payment_by_id(self, id:str) -> Optional[ExpectedPaymentResponse]:
@@ -192,8 +195,8 @@ class ModernTreasury:
         return ExpectedPaymentResponse(response)
 
     # Payment Orders
-    def create_payment_order(self, payment_order_request: PaymentOrderRequest) -> PaymentOrderResponse:
-        response = self._post(url=PAYMENT_ORDER_URL, payload=payment_order_request.to_json())
+    def create_payment_order(self, payment_order_request: PaymentOrderRequest, key: str) -> PaymentOrderResponse:
+        response = self._post(url=PAYMENT_ORDER_URL, payload=payment_order_request.to_json(), key=key)
         return PaymentOrderResponse(response)
 
     def get_payment_order(self):
@@ -201,17 +204,19 @@ class ModernTreasury:
         return ExpectedPaymentResponse(result.json())
 
     # Virtual Account
-    def create_virtual_account(self, virtual_account_request: VirtualAccountRequest):
+    def create_virtual_account(self, virtual_account_request: VirtualAccountRequest, key: str):
         response = self._post(url=VIRTUAL_ACCOUNT_URL,
-                              payload=virtual_account_request.to_json())
+                              payload=virtual_account_request.to_json(),
+                              key=key)
         return VirtualAccountResponse(response)
 
     def get_virtual_account_by_id(self, id:str):
         result = requests.get(url=f'{VIRTUAL_ACCOUNT_URL}/{id}', auth=self.http_basic_auth)
         return VirtualAccountResponse(result.json())
 
-    def post_incoming_payment_detail(self, incoming_payment_detail_request: IncomingPaymentDetailRequest)\
+    def post_incoming_payment_detail(self, incoming_payment_detail_request: IncomingPaymentDetailRequest, key: str)\
             -> IncomingPaymentDetailResponse:
         response = self._post(url=INCOMING_PAYMENT_DETAIL_URL,
-                              payload=incoming_payment_detail_request.to_json())
+                              payload=incoming_payment_detail_request.to_json(),
+                              key=key)
         return IncomingPaymentDetailResponse(response)
