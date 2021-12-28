@@ -113,7 +113,7 @@ class ModernTreasury:
         return CounterPartyResponse(self._get(url=f'{COUNTER_PARTIES_URL}/{id}'))
 
     def create_counterparty_account(self, counterparty_request: CounterPartyRequest, key: str = None) -> CounterPartyResponse:
-        return CounterPartyResponse(self._post(url=COUNTER_PARTIES_URL, payload=counterparty_request.to_json()), key=key)
+        return CounterPartyResponse(self._post(url=COUNTER_PARTIES_URL, payload=counterparty_request.to_json(), key=key))
 
     # external account
     def update_external_account(self, external_account_request: ExternalAccountRequest,
