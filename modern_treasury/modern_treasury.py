@@ -27,7 +27,7 @@ EXPECTED_PAYMENTS_URL = 'https://app.moderntreasury.com/api/expected_payments'
 PAYMENT_ORDER_URL = 'https://app.moderntreasury.com/api/payment_orders'
 VIRTUAL_ACCOUNT_URL = 'https://app.moderntreasury.com/api/virtual_accounts'
 EXTERNAL_ACCOUNT_URL = 'https://app.moderntreasury.com/api/external_accounts'
-
+LIST_INCOMING_PAYMENT_DETAIL_URL = 'https://app.moderntreasury.com/api/incoming_payment_details'
 INCOMING_PAYMENT_DETAIL_URL = 'https://app.moderntreasury.com/api/simulations/incoming_payment_details/create_async'
 
 
@@ -41,10 +41,11 @@ class ModernTreasury:
         self.http_basic_auth = HTTPBasicAuth(username=self.organization_id, password=self.api_key)
         self.headers = {"Content-Type": "application/json"}
 
-    def _post(self, url:str, payload: dict) -> dict:
+    def _post(self, url:str, payload: dict, key: str = None) -> dict:
+        headers = {**self.headers, "Idempotency-Key": key} if key else self.headers
         response = requests.post(url=url,
                                  auth=self.http_basic_auth,
-                                 headers=self.headers,
+                                 headers=headers,
                                  json=payload)
         if not response.ok:
             raise ModernTreasuryException(response.status_code, response.reason, url, response.json())
@@ -111,8 +112,8 @@ class ModernTreasury:
     def get_counterparty_account_by_id(self, id:str) -> CounterPartyResponse:
         return CounterPartyResponse(self._get(url=f'{COUNTER_PARTIES_URL}/{id}'))
 
-    def create_counterparty_account(self, counterparty_request: CounterPartyRequest) -> CounterPartyResponse:
-        return CounterPartyResponse(self._post(url=COUNTER_PARTIES_URL, payload=counterparty_request.to_json()))
+    def create_counterparty_account(self, counterparty_request: CounterPartyRequest, key: str = None) -> CounterPartyResponse:
+        return CounterPartyResponse(self._post(url=COUNTER_PARTIES_URL, payload=counterparty_request.to_json(), key=f"counterparty_{key}" if key else None))
 
     # external account
     def update_external_account(self, external_account_request: ExternalAccountRequest,
@@ -131,10 +132,11 @@ class ModernTreasury:
         return result
 
     def create_account_details(self, account_details: AccountDetailsRequest,
-                               external_account_id: str) -> AccountDetailsResponse:
+                               external_account_id: str,
+                               key: str = None) -> AccountDetailsResponse:
         url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/account_details'
         payload = account_details.to_json()
-        return AccountDetailsResponse(self._post(url=url, payload=payload))
+        return AccountDetailsResponse(self._post(url=url, payload=payload, key=f"account_details_{key}" if key else None))
 
     # routing details
     def get_routing_details_by_id(self, external_account_id, routing_details_id):
@@ -147,10 +149,11 @@ class ModernTreasury:
         return result
 
     def create_routing_details(self, routing_details: RoutingDetailsRequest,
-                               external_account_id: str) -> RoutingDetailsResponse:
+                               external_account_id: str,
+                               key: str = None) -> RoutingDetailsResponse:
         url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/routing_details'
         payload = routing_details.to_json()
-        return RoutingDetailsResponse(self._post(url=url, payload=payload))
+        return RoutingDetailsResponse(self._post(url=url, payload=payload, key=f"routing_details_{key}" if key else None))
 
     # Internal Accounts
     def get_internal_accounts(self):
@@ -169,8 +172,8 @@ class ModernTreasury:
             raise Exception("id cannot be an empty string")
 
     # External Accounts
-    def create_external_account(self, external_account_request: ExternalAccountRequest):
-        response = self._post(url=EXTERNAL_ACCOUNT_URL, payload=external_account_request.to_json())
+    def create_external_account(self, external_account_request: ExternalAccountRequest, key: str = None):
+        response = self._post(url=EXTERNAL_ACCOUNT_URL, payload=external_account_request.to_json(), key=f"external_account_{key}" if key else None)
         return ExpectedPaymentResponse(response)
 
     def delete_external_account(self, external_account_id:str):
@@ -179,8 +182,8 @@ class ModernTreasury:
         return result
 
     # Expected Payments
-    def create_expected_payment(self, expected_payment_request: ExpectedPaymentRequest) -> ExpectedPaymentResponse:
-        response = self._post(url=EXPECTED_PAYMENTS_URL, payload=expected_payment_request.to_json())
+    def create_expected_payment(self, expected_payment_request: ExpectedPaymentRequest, key: str = None) -> ExpectedPaymentResponse:
+        response = self._post(url=EXPECTED_PAYMENTS_URL, payload=expected_payment_request.to_json(), key=f"expected_payment_{key}" if key else None)
         return ExpectedPaymentResponse(response)
 
     def get_expected_payment_by_id(self, id:str) -> Optional[ExpectedPaymentResponse]:
@@ -192,26 +195,49 @@ class ModernTreasury:
         return ExpectedPaymentResponse(response)
 
     # Payment Orders
-    def create_payment_order(self, payment_order_request: PaymentOrderRequest) -> PaymentOrderResponse:
-        response = self._post(url=PAYMENT_ORDER_URL, payload=payment_order_request.to_json())
+    def create_payment_order(self, payment_order_request: PaymentOrderRequest, key: str = None) -> PaymentOrderResponse:
+        response = self._post(url=PAYMENT_ORDER_URL, payload=payment_order_request.to_json(), key=f"payment_order_{key}" if key else None)
         return PaymentOrderResponse(response)
 
     def get_payment_order(self):
         result = self._get(url=f'{PAYMENT_ORDER_URL}/{id}')
-        return ExpectedPaymentResponse(result.json())
+        return PaymentOrderResponse(result.json())
+
+    def list_payment_orders(self, metadata: dict=None) -> List[Optional[PaymentOrderResponse]]:
+        querystring = {}
+        if metadata:
+            for key, value in metadata.items():
+                querystring[f'metadata[{str(key)}]'] = str(value)
+        try:
+            response = self._get(url=PAYMENT_ORDER_URL, params=querystring)
+            return [PaymentOrderResponse(payment_order) for payment_order in response]
+        except:
+            return []
 
     # Virtual Account
-    def create_virtual_account(self, virtual_account_request: VirtualAccountRequest):
+    def create_virtual_account(self, virtual_account_request: VirtualAccountRequest, key: str = None):
         response = self._post(url=VIRTUAL_ACCOUNT_URL,
-                              payload=virtual_account_request.to_json())
+                              payload=virtual_account_request.to_json(),
+                              key=f"virtual_account_{key}" if key else None)
         return VirtualAccountResponse(response)
 
     def get_virtual_account_by_id(self, id:str):
         result = requests.get(url=f'{VIRTUAL_ACCOUNT_URL}/{id}', auth=self.http_basic_auth)
         return VirtualAccountResponse(result.json())
 
-    def post_incoming_payment_detail(self, incoming_payment_detail_request: IncomingPaymentDetailRequest)\
+    def post_incoming_payment_detail(self, incoming_payment_detail_request: IncomingPaymentDetailRequest, key: str = None)\
             -> IncomingPaymentDetailResponse:
         response = self._post(url=INCOMING_PAYMENT_DETAIL_URL,
-                              payload=incoming_payment_detail_request.to_json())
+                              payload=incoming_payment_detail_request.to_json(),
+                              key=f"incoming_payment_detail_{key}" if key else None)
         return IncomingPaymentDetailResponse(response)
+
+    def list_incoming_payment_detail(self, virtual_account_id: str = None) -> List[Optional[CounterPartyResponse]]:
+        querystring = {}
+        if virtual_account_id:
+                querystring[f'virtual_account_id'] = virtual_account_id
+        try:
+            response = self._get(url=LIST_INCOMING_PAYMENT_DETAIL_URL, params=querystring)
+            return [IncomingPaymentDetailResponse(payment_order) for payment_order in response]
+        except:
+            return []
