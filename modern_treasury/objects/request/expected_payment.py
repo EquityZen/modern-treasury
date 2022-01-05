@@ -4,7 +4,7 @@ class ExpectedPaymentRequest:
                  date_upper_bound: str = None, date_lower_bound: str = None,
                  description: str = None, statement_descriptor: str = None,
                  metadata: dict = None, counterparty_id: str = None,
-                 line_items=None):
+                 line_items=None, idempotency_key:str = None):
         self.amount_upper_bound = amount_upper_bound
         self.amount_lower_bound = amount_lower_bound
         self.direction = direction # see DirectionTypes
@@ -18,6 +18,7 @@ class ExpectedPaymentRequest:
         self.metadata = {} if not metadata else {}
         self.line_items = [] if not line_items else line_items
         self.counterparty_id = counterparty_id
+        self.idempotency_key = f"expected_payment_{idempotency_key}" if idempotency_key else None
 
     def to_json(self):
         return {
