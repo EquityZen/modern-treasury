@@ -18,7 +18,8 @@ class PaymentOrderRequest:
                  metadata:dict = None, charge_bearer:str = None, foreign_exchange_indicator:str = None,
                  foreign_exchange_contract:str = None, nsf_protected:str = None,
                  originating_party_name:str = None, ultimate_originating_party_name:str = None,
-                 ultimate_originating_party_identifier:str = None):
+                 ultimate_originating_party_identifier:str = None,
+                 idempotency_key:str = None):
 
         self.type = type # One of ach, wire, check, book, rtp, etc.
         self.fallback_type = fallback_type
@@ -53,6 +54,7 @@ class PaymentOrderRequest:
         self.ultimate_originating_party_name = ultimate_originating_party_name
         self.ultimate_originating_party_identifier = ultimate_originating_party_identifier
         self.receiving_account = receiving_account
+        self.idempotency_key = f"payment_order_{idempotency_key}" if idempotency_key else None
 
     def to_json(self):
         account_details_json = [account_detail.to_json() for account_detail in self.account_details]
