@@ -1,6 +1,7 @@
 from .account import AccountResponse
 from .account_details import AccountDetailsResponse
 from .address import AddressResponse
+from .connection import ConnectionResponse
 from .counterparty import CounterPartyResponse
 from .expected_payment import ExpectedPaymentResponse
 from .external_account import ExternalAccountResponse
