@@ -36,9 +36,9 @@ class ModernTreasuryTest(TestCase):
     def test__get_connection(self, mock_get):
         with open("modern_treasury/tests/fixtures/list_connections_response.json", "rb") as f:
             mock_get.return_value = json.load(f)
-            res = self.api.get_connection(vendor_name="Gringotts Wizarding Bank")
+            res = self.api.get_connection_by_vendor(vendor_name="Gringotts Wizarding Bank")
             self.assertIsNotNone(res)
-            res = self.api.get_connection(vendor_id="example1")
+            res = self.api.get_connection_by_vendor(vendor_id="example1")
             self.assertIsNotNone(res)
-            res = self.api.get_connection(vendor_id="random_string")
+            res = self.api.get_connection_by_vendor(vendor_id="random_string")
             self.assertIsNone(res)
