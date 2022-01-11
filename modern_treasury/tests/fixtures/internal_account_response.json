@@ -1,0 +1,76 @@
+{
+    "id": "3389fcaa-78ad-4656-988a-e3b6f2b05529",
+    "object": "internal_account",
+    "live_mode": false,
+    "account_type": null,
+    "party_name": "Modern Treasury",
+    "party_type": null,
+    "party_address": {
+        "id": "d71521e9-6c54-41e3-97fb-5e43bdba7e5a",
+        "object": "address",
+        "live_mode": false,
+        "line1": "3450 Tremblay Shoal",
+        "line2": "Suite 155",
+        "locality": "North Shantae",
+        "region": "OR",
+        "postal_code": "13671",
+        "country": "US",
+        "created_at": "2021-12-21T15:06:39Z",
+        "updated_at": "2021-12-21T15:06:39Z"
+    },
+    "account_details": [
+        {
+            "id": "14758ea7-4082-4760-8c82-ad88964869e2",
+            "object": "account_detail",
+            "live_mode": false,
+            "account_number": "0201816418",
+            "account_number_type": "other",
+            "discarded_at": null,
+            "created_at": "2021-12-21T15:06:39Z",
+            "updated_at": "2021-12-21T15:06:39Z"
+        }
+    ],
+    "routing_details": [
+        {
+            "id": "4860c76a-752d-43ac-ae4f-a1cdb5e8078f",
+            "object": "routing_detail",
+            "live_mode": false,
+            "payment_type": null,
+            "routing_number": "021000021",
+            "routing_number_type": "aba",
+            "bank_name": "JPMorgan Chase Bank, National Association",
+            "bank_address": {
+                "id": "8fd2389e-0678-4a42-8ec0-27919c894a85",
+                "object": "address",
+                "live_mode": false,
+                "line1": "1111 Polaris Pkwy",
+                "line2": null,
+                "locality": "Columbus",
+                "region": "OH",
+                "postal_code": "43240",
+                "country": "US",
+                "created_at": "2021-12-21T15:06:39Z",
+                "updated_at": "2021-12-21T15:06:39Z"
+            },
+            "discarded_at": null,
+            "created_at": "2021-12-21T15:06:39Z",
+            "updated_at": "2021-12-21T15:06:39Z"
+        }
+    ],
+    "name": "Bookings",
+    "metadata": {},
+    "connection": {
+        "id": "dac94e63-9f4a-46b9-ba6b-412acfbf4cc1",
+        "object": "connection",
+        "live_mode": false,
+        "vendor_id": "example1",
+        "vendor_name": "Gringotts Wizarding Bank",
+        "vendor_customer_id": null,
+        "discarded_at": null,
+        "created_at": "2018-07-24T23:43:49Z",
+        "updated_at": "2018-07-24T23:43:49Z"
+    },
+    "currency": "USD",
+    "created_at": "2021-12-21T15:06:39Z",
+    "updated_at": "2021-12-21T15:06:39Z"
+}

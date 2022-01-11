@@ -9,9 +9,11 @@ from modern_treasury.objects.request.counterparty import CounterPartyRequest
 from modern_treasury.objects.request.expected_payment import ExpectedPaymentRequest
 from modern_treasury.objects.request.external_account import ExternalAccountRequest
 from modern_treasury.objects.request.incoming_payment_detail import IncomingPaymentDetailRequest
+from modern_treasury.objects.request.internal_account import InternalAccountRequest
 from modern_treasury.objects.request.payment_order import PaymentOrderRequest
 from modern_treasury.objects.request.routing_details import RoutingDetailsRequest
 from modern_treasury.objects.request.virtual_account import VirtualAccountRequest
+from modern_treasury.objects.response.connection import ConnectionResponse
 from modern_treasury.objects.response.counterparty import CounterPartyResponse
 from modern_treasury.objects.response.expected_payment import ExpectedPaymentResponse
 from modern_treasury.objects.response.external_account import ExternalAccountResponse
@@ -29,6 +31,7 @@ VIRTUAL_ACCOUNT_URL = 'https://app.moderntreasury.com/api/virtual_accounts'
 EXTERNAL_ACCOUNT_URL = 'https://app.moderntreasury.com/api/external_accounts'
 LIST_INCOMING_PAYMENT_DETAIL_URL = 'https://app.moderntreasury.com/api/incoming_payment_details'
 INCOMING_PAYMENT_DETAIL_URL = 'https://app.moderntreasury.com/api/simulations/incoming_payment_details/create_async'
+LIST_CONNECTIONS_URL = 'https://app.moderntreasury.com/api/connections'
 
 
 class ModernTreasury:
@@ -239,3 +242,26 @@ class ModernTreasury:
             return [IncomingPaymentDetailResponse(payment_order) for payment_order in response]
         except:
             return []
+    
+    def list_connections(self, vendor_customer_id: Optional[str] = None, entity: Optional[str] = None) -> List[ConnectionResponse]:
+        querystring = {
+            "vendor_customer_id": vendor_customer_id,
+            "entity": entity,
+        }
+        response = self._get(LIST_CONNECTIONS_URL, params=querystring)
+        return [ConnectionResponse(connection) for connection in response]
+        
+    def create_internal_account(self, internal_account_request: InternalAccountRequest) -> InternalAccountResponse:
+        response = self._post(
+            url=INTERNAL_ACCOUNT_URL,
+            payload=internal_account_request.to_json(), 
+            idempotency_key=internal_account_request.idempotency_key)
+        return InternalAccountResponse(response)
+
+    def get_connection_by_vendor(self, vendor_name: Optional[str] = None, vendor_id: Optional[str] = None) -> Optional[ConnectionResponse]:
+        connections = self.list_connections()
+        if vendor_name:
+            connections = filter(lambda connection: connection.vendor_name == vendor_name, connections)
+        if vendor_id:
+            connections = filter(lambda connection: connection.vendor_id == vendor_id, connections)
+        return next(connections, None)
