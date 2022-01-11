@@ -257,3 +257,11 @@ class ModernTreasury:
             payload=internal_account_request.to_json(), 
             idempotency_key=internal_account_request.idempotency_key)
         return InternalAccountResponse(response)
+
+    def get_connection(self, vendor_name: Optional[str] = None, vendor_id: Optional[str] = None) -> Optional[ConnectionResponse]:
+        connections = self.list_connections()
+        if vendor_name:
+            connections = filter(lambda connection: connection.vendor_name == vendor_name, connections)
+        if vendor_id:
+            connections = filter(lambda connection: connection.vendor_id == vendor_id, connections)
+        return next(connections, None)

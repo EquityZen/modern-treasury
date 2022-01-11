@@ -1,0 +1,24 @@
+[
+    {
+        "created_at": "2021-11-16T15:35:36Z",
+        "discarded_at": null,
+        "id": "3248721c-3995-4cc5-9781-7547c92698fb",
+        "live_mode": false,
+        "object": "connection",
+        "updated_at": "2021-11-16T15:35:36Z",
+        "vendor_customer_id": null,
+        "vendor_id": "example1",
+        "vendor_name": "Gringotts Wizarding Bank"
+    },
+    {
+        "created_at": "2021-11-16T15:35:36Z",
+        "discarded_at": null,
+        "id": "f94c2c43-ea06-430d-8570-c64f26e509a1",
+        "live_mode": false,
+        "object": "connection",
+        "updated_at": "2021-11-16T15:35:36Z",
+        "vendor_customer_id": null,
+        "vendor_id": "example2",
+        "vendor_name": "Iron Bank of Braavos"
+    }
+]
