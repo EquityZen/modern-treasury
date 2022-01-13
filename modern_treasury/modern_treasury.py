@@ -264,4 +264,4 @@ class ModernTreasury:
             connections = filter(lambda connection: connection.vendor_name == vendor_name, connections)
         if vendor_id:
             connections = filter(lambda connection: connection.vendor_id == vendor_id, connections)
-        return next(connections, None)
+        return next(iter(connections), None)
