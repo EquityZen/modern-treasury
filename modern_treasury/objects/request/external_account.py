@@ -1,5 +1,5 @@
 from .address import AddressRequest
-from typing List
+from typing import List
 
 
 class ExternalAccountRequest():
