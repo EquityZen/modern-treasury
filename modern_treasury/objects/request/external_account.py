@@ -21,8 +21,8 @@ class ExternalAccountRequest():
         routing_details_json = [routing_detail.to_json() for routing_detail in self.routing_details]
         result = {
             'counter_party_id': self.counter_party_id,
-            'account_details': self.account_details,
-            'routing_details': self.routing_details,
+            'account_details': account_details_json,
+            'routing_details': routing_details_json,
         }
         if self.account_type:
             result['account_type'] = self.account_type
