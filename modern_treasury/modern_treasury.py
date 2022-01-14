@@ -175,7 +175,7 @@ class ModernTreasury:
     # External Accounts
     def create_external_account(self, external_account_request: ExternalAccountRequest):
         response = self._post(url=EXTERNAL_ACCOUNT_URL, payload=external_account_request.to_json(), idempotency_key=external_account_request.idempotency_key)
-        return ExpectedPaymentResponse(response)
+        return ExternalAccountResponse(response)
 
     def delete_external_account(self, external_account_id:str):
         url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}'
@@ -242,7 +242,7 @@ class ModernTreasury:
             return [IncomingPaymentDetailResponse(payment_order) for payment_order in response]
         except:
             return []
-    
+
     def list_connections(self, vendor_customer_id: Optional[str] = None, entity: Optional[str] = None) -> List[ConnectionResponse]:
         querystring = {
             "vendor_customer_id": vendor_customer_id,
@@ -250,11 +250,11 @@ class ModernTreasury:
         }
         response = self._get(LIST_CONNECTIONS_URL, params=querystring)
         return [ConnectionResponse(connection) for connection in response]
-        
+
     def create_internal_account(self, internal_account_request: InternalAccountRequest) -> InternalAccountResponse:
         response = self._post(
             url=INTERNAL_ACCOUNT_URL,
-            payload=internal_account_request.to_json(), 
+            payload=internal_account_request.to_json(),
             idempotency_key=internal_account_request.idempotency_key)
         return InternalAccountResponse(response)
 

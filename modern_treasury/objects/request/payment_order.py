@@ -68,6 +68,8 @@ class PaymentOrderRequest:
             'originating_account_id': self.originating_account_id,
             'receiving_account_id': self.receiving_account_id ,
             'account_type': self.account_type,
+            'account_details_json': account_details_json,
+            'routing_details_json': routing_details_json,
             # # 'party_name': self.party_name,
             # # 'party_type': self.party_type,
             # # 'party_address': self.party_address,
