@@ -1,4 +1,6 @@
 from .address import AddressRequest
+from .account_details import AccountDetailsRequest
+from .routing_details import RoutingDetailsRequest
 from typing import List
 
 
