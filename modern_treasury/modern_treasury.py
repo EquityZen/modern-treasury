@@ -216,6 +216,17 @@ class ModernTreasury:
             return []
 
     # Virtual Account
+    def list_virtual_accounts(self, metadata: dict=None) -> List[Optional[VirtualAccountResponse]]:
+        querystring = {}
+        if metadata:
+            for key, value in metadata.items():
+                querystring[f'metadata[{str(key)}]'] = str(value)
+        try:
+            response = self._get(url=VIRTUAL_ACCOUNT_URL, params=querystring)
+            return [VirtualAccountResponse(virtual_account) for virtual_account in response]
+        except:
+            return []
+
     def create_virtual_account(self, virtual_account_request: VirtualAccountRequest):
         response = self._post(url=VIRTUAL_ACCOUNT_URL,
                               payload=virtual_account_request.to_json(),
