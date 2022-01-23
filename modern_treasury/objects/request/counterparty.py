@@ -13,9 +13,9 @@ class CounterPartyRequest():
     def to_json(self) -> dict:
         account_list = [account.to_json() for account in self.account_request_list]
 
-        counter_party_json = {
+        counterparty_json = {
             "name": self.name,
             "accounts": account_list,
             "metadata": self.metadata,
         }
-        return counter_party_json
+        return counterparty_json

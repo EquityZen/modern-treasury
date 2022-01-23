@@ -85,17 +85,16 @@ class ModernTreasury:
     def get_counter_parties(self):
         return self._get(url=COUNTER_PARTIES_URL)
 
-    def get_counter_party_account_by_name(self, name) -> Optional[CounterPartyResponse]:
+    def get_counterparty_account_by_name(self, name) -> Optional[CounterPartyResponse]:
         for account in self.get_counter_parties():
             mt_account = CounterPartyResponse(account)
             if mt_account.name == name:
                 return mt_account
         return None
 
-    def update_counterparty(self, counter_party_request: CounterPartyRequest, counter_party_id:str):
-        payload = counter_party_request.to_json()
-        self._patch(url=f'{COUNTER_PARTIES_URL}/{counter_party_id}',
-                    payload=payload)
+    def update_counterparty(self, counterparty_request: CounterPartyRequest, counterparty_id:str):
+        payload = counterparty_request.to_json()
+        self._patch(url=f'{COUNTER_PARTIES_URL}/{counterparty_id}', payload=payload)
 
     def list_counterparties(self, metadata: dict=None) -> List[Optional[CounterPartyResponse]]:
         querystring = {'page': '1', 'per_page': '100'}
