@@ -156,8 +156,13 @@ class ModernTreasury:
         return RoutingDetailsResponse(self._post(url=url, payload=payload, idempotency_key=routing_details.idempotency_key))
 
     # Internal Accounts
-    def get_internal_accounts(self):
-        result = self._get(url=INTERNAL_ACCOUNT_URL)
+    def get_internal_accounts(self, per_page=None, page=None):
+        params = {}
+        if per_page:
+            params.update({"per_page": per_page})
+        if page:
+            params.update({"page": page})
+        result = self._get(url=INTERNAL_ACCOUNT_URL, params=params if params else None)
 
         internal_accounts = []
         for account in result:
