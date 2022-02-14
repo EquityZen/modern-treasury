@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import List
 
 from .account_details import AccountDetailsRequest
@@ -5,7 +6,7 @@ from .routing_details import RoutingDetailsRequest
 
 
 class PaymentOrderRequest:
-    def __init__(self, type:str, amount:int, direction, originating_account_id=None,
+    def __init__(self, type:str, amount: Decimal, direction, originating_account_id=None,
                  subtype:str = None, fallback_type:str = None, receiving_account_id:str = None,
                  receiving_account:AccountDetailsRequest=None,
                  account_type:str = None, party_name:str = None,
@@ -24,7 +25,7 @@ class PaymentOrderRequest:
         self.type = type # One of ach, wire, check, book, rtp, etc.
         self.fallback_type = fallback_type
         self.subtype = subtype
-        self.amount = amount
+        self.amount = int(amount * 100)
         self.direction = direction
         self.originating_account_id = originating_account_id
         self.receiving_account_id = receiving_account_id
