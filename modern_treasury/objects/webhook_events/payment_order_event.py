@@ -7,6 +7,7 @@ class PaymentOrderEventStates:
     CANCELLED = "cancelled"
     FAILED = "failed"
     DENIED = "denied"
+    APPROVED = "approved"
 
 
 class PaymentOrderData(Data):
@@ -16,6 +17,10 @@ class PaymentOrderData(Data):
 
     @property
     def is_cancelled(self):
+        return self.status == PaymentOrderEventStates.CANCELLED
+    
+    @property
+    def is_denied(self):
         return self.status == PaymentOrderEventStates.CANCELLED
 
 
