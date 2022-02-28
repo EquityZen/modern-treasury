@@ -10,7 +10,7 @@ from modern_treasury.objects.request.expected_payment import ExpectedPaymentRequ
 from modern_treasury.objects.request.external_account import ExternalAccountRequest
 from modern_treasury.objects.request.incoming_payment_detail import IncomingPaymentDetailRequest
 from modern_treasury.objects.request.internal_account import InternalAccountRequest
-from modern_treasury.objects.request.payment_order import PaymentOrderRequest
+from modern_treasury.objects.request.payment_order import PaymentOrderRequest, UpdatePaymentOrderRequest
 from modern_treasury.objects.request.routing_details import RoutingDetailsRequest
 from modern_treasury.objects.request.virtual_account import VirtualAccountRequest
 from modern_treasury.objects.response.connection import ConnectionResponse
@@ -204,9 +204,9 @@ class ModernTreasury:
         response = self._post(url=PAYMENT_ORDER_URL, payload=payment_order_request.to_json(), idempotency_key=payment_order_request.idempotency_key)
         return PaymentOrderResponse(response)
 
-    def get_payment_order(self):
+    def get_payment_order(self, id):
         result = self._get(url=f'{PAYMENT_ORDER_URL}/{id}')
-        return PaymentOrderResponse(result.json())
+        return PaymentOrderResponse(result)
 
     def list_payment_orders(self, metadata: dict=None) -> List[Optional[PaymentOrderResponse]]:
         querystring = {}
@@ -218,6 +218,10 @@ class ModernTreasury:
             return [PaymentOrderResponse(payment_order) for payment_order in response]
         except:
             return []
+    
+    def update_payment_order(self, id, payment_order_request: UpdatePaymentOrderRequest) -> PaymentOrderResponse:
+        response = self._patch(url=f"{PAYMENT_ORDER_URL}/{id}", payload=payment_order_request.to_json())
+        return PaymentOrderResponse(response)
 
     # Virtual Account
     def list_virtual_accounts(self, metadata: dict=None) -> List[Optional[VirtualAccountResponse]]:
