@@ -11,8 +11,8 @@ class PaymentOrderRequest:
     type: str
     amount: Decimal
     direction: str
-    originating_account_id: str
-    receiving_account_id: str
+    originating_account_id: str = field(default=None)
+    receiving_account_id: str = field(default=None)
     fallback_type: Optional[str] = field(default=None)
     subtype: Optional[str] = field(default=None)
     account_type: Optional[str] = field(default=None)
