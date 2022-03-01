@@ -1,61 +1,51 @@
+from dataclasses import dataclass, field
 from decimal import Decimal
-from typing import List
+from typing import List, Optional
 
 from .account_details import AccountDetailsRequest
 from .routing_details import RoutingDetailsRequest
 
 
+@dataclass
 class PaymentOrderRequest:
-    def __init__(self, type:str, amount: Decimal, direction, originating_account_id=None,
-                 subtype:str = None, fallback_type:str = None, receiving_account_id:str = None,
-                 receiving_account:AccountDetailsRequest=None,
-                 account_type:str = None, party_name:str = None,
-                 party_type:str = None, party_address:str = None, account_details: List[AccountDetailsRequest] = None,
-                 plaid_processor_token:str = None, routing_details: List[RoutingDetailsRequest] = None,
-                 accounting_category_id:str = None, accounting_ledger_class_id:str = None,
-                 currency:str = None, effective_date:str = None, priority:str = None,
-                 description:str = None, statement_descriptor:str = None,
-                 remittance_information:str = None, purpose:str = None, line_items:str = None,
-                 metadata:dict = None, charge_bearer:str = None, foreign_exchange_indicator:str = None,
-                 foreign_exchange_contract:str = None, nsf_protected:str = None,
-                 originating_party_name:str = None, ultimate_originating_party_name:str = None,
-                 ultimate_originating_party_identifier:str = None,
-                 idempotency_key:str = None):
+    type: str
+    amount: Decimal
+    direction: str
+    originating_account_id: str
+    receiving_account_id: str
+    fallback_type: Optional[str] = field(default=None)
+    subtype: Optional[str] = field(default=None)
+    account_type: Optional[str] = field(default=None)
+    party_name: Optional[str] = field(default=None)
+    party_type: Optional[str] = field(default=None)
+    party_address: Optional[str] = field(default=None)
+    plaid_processor_token: Optional[str] = field(default=None)
+    accounting_category_id: Optional[str] = field(default=None)
+    accounting_ledger_class_id: Optional[str] = field(default=None)
+    currency: Optional[str] = field(default=None)
+    effective_date: Optional[str] = field(default=None)
+    priority: Optional[str] = field(default=None)
+    description: Optional[str] = field(default=None)
+    statement_descriptor: Optional[str] = field(default=None)
+    remittance_information: Optional[str] = field(default=None)
+    purpose: Optional[str] = field(default=None)
+    line_items: Optional[str] = field(default=None)
+    metadata: Optional[dict] = field(default=None)
+    charge_bearer: Optional[str] = field(default=None)
+    foreign_exchange_indicator: Optional[str] = field(default=None)
+    foreign_exchange_contract: Optional[str] = field(default=None)
+    nsf_protected: Optional[str] = field(default=None)
+    originating_party_name: Optional[str] = field(default=None)
+    ultimate_originating_party_name: Optional[str] = field(default=None)
+    ultimate_originating_party_identifier: Optional[str] = field(default=None)
+    receiving_account: Optional[str] = field(default=None)
+    idempotency_key: Optional[str] = field(default=None)
+    account_details: Optional[List[AccountDetailsRequest]] = field(default_factory=list)
+    routing_details: Optional[List[RoutingDetailsRequest]] = field(default_factory=list)
 
-        self.type = type # One of ach, wire, check, book, rtp, etc.
-        self.fallback_type = fallback_type
-        self.subtype = subtype
-        self.amount = int(amount * 100)
-        self.direction = direction
-        self.originating_account_id = originating_account_id
-        self.receiving_account_id = receiving_account_id
-        self.account_type = account_type
-        self.party_name = party_name
-        self.party_type = party_type
-        self.party_address = party_address
-        self.account_details = account_details if account_details else []
-        self.plaid_processor_token = plaid_processor_token
-        self.routing_details = routing_details if routing_details else []
-        self.accounting_category_id = accounting_category_id
-        self.accounting_ledger_class_id = accounting_ledger_class_id
-        self.currency = currency
-        self.effective_date = effective_date
-        self.priority = priority
-        self.description = description
-        self.statement_descriptor = statement_descriptor
-        self.remittance_information = remittance_information
-        self.purpose = purpose
-        self.line_items = line_items
-        self.metadata = metadata
-        self.charge_bearer = charge_bearer
-        self.foreign_exchange_indicator = foreign_exchange_indicator
-        self.foreign_exchange_contract = foreign_exchange_contract
-        self.nsf_protected = nsf_protected
-        self.originating_party_name = originating_party_name
-        self.ultimate_originating_party_name = ultimate_originating_party_name
-        self.ultimate_originating_party_identifier = ultimate_originating_party_identifier
-        self.receiving_account = receiving_account
-        self.idempotency_key = f"payment_order_{idempotency_key}" if idempotency_key else None
+    def __post_init__(self):
+        self.amount = int(self.amount * 100)
+        self.idempotency_key = f"payment_order_{self.idempotency_key}" if self.idempotency_key else None
 
     def to_json(self):
         account_details_json = [account_detail.to_json() for account_detail in self.account_details]
@@ -101,3 +91,14 @@ class PaymentOrderRequest:
         if self.metadata:
             request['metadata'] = self.metadata
         return request
+
+@dataclass
+class UpdatePaymentOrderRequest:
+    status: Optional[str] = field(default=None)
+    metadata: Optional[dict] = field(default=None)
+
+    def to_json(self):
+        return {
+            "status": self.status,
+            "metadata": self.metadata
+        }
