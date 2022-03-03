@@ -1,18 +1,14 @@
+from dataclasses import asdict, dataclass
+
+
+@dataclass
 class AddressRequest:
-    def __init__(self, line1, line2, locality, region, postal_code, country):
-        self.line1 = line1
-        self.line2 = line2
-        self.locality = locality
-        self.region = region
-        self.postal_code = postal_code
-        self.country = country
+    line1: str
+    line2: str
+    locality: str
+    region: str
+    postal_code: str
+    country: str
 
     def to_json(self) -> dict:
-        return {
-            'line1' : self.line1,
-            'line2' : self.line2,
-            'locality' : self.locality,
-            'region' : self.region,
-            'postal_code' : self.postal_code,
-            'country' : self.country,
-        }
+        return asdict(self)

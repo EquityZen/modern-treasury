@@ -1,24 +1,30 @@
+from dataclasses import dataclass
+from typing import Optional
+
+from modern_treasury.objects.request.line_item import LineItemRequest
+
+
+@dataclass
 class ExpectedPaymentRequest:
-    def __init__(self, amount_upper_bound: int, amount_lower_bound: int, internal_account_id: str,
-                 direction: str, type: str= None, currency: str = None,
-                 date_upper_bound: str = None, date_lower_bound: str = None,
-                 description: str = None, statement_descriptor: str = None,
-                 metadata: dict = None, counterparty_id: str = None,
-                 line_items=None, idempotency_key:str = None):
-        self.amount_upper_bound = amount_upper_bound
-        self.amount_lower_bound = amount_lower_bound
-        self.direction = direction # see DirectionTypes
-        self.internal_account_id = internal_account_id
-        self.type = type
-        self.currency = currency
-        self.date_upper_bound = date_upper_bound
-        self.date_lower_bound = date_lower_bound
-        self.description = description
-        self.statement_descriptor = statement_descriptor
-        self.metadata = {} if not metadata else {}
-        self.line_items = [] if not line_items else line_items
-        self.counterparty_id = counterparty_id
-        self.idempotency_key = f"expected_payment_{idempotency_key}" if idempotency_key else None
+    amount_upper_bound: int
+    amount_lower_bound: int
+    internal_account_id: str
+    direction: str
+    type: Optional[str] = None
+    currency: Optional[str] = None
+    date_upper_bound: Optional[str] = None
+    date_lower_bound: Optional[str] = None
+    description: Optional[str] = None
+    statement_descriptor: Optional[str] = None
+    metadata: Optional[dict] = None
+    counterparty_id: Optional[str] = None
+    line_items: Optional[LineItemRequest] = None
+    idempotency_key: Optional[str] = None
+
+    def __post_init__(self):
+        self.metadata = {} if not self.metadata else {}
+        self.line_items = [] if not self.line_items else line_items
+        self.idempotency_key = f"expected_payment_{self.idempotency_key}" if self.idempotency_key else None
 
     def to_json(self):
         return {

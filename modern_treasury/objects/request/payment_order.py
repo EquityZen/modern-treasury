@@ -11,35 +11,35 @@ class PaymentOrderRequest:
     type: str
     amount: Decimal
     direction: str
-    originating_account_id: str = field(default=None)
-    receiving_account_id: str = field(default=None)
-    fallback_type: Optional[str] = field(default=None)
-    subtype: Optional[str] = field(default=None)
-    account_type: Optional[str] = field(default=None)
-    party_name: Optional[str] = field(default=None)
-    party_type: Optional[str] = field(default=None)
-    party_address: Optional[str] = field(default=None)
-    plaid_processor_token: Optional[str] = field(default=None)
-    accounting_category_id: Optional[str] = field(default=None)
-    accounting_ledger_class_id: Optional[str] = field(default=None)
-    currency: Optional[str] = field(default=None)
-    effective_date: Optional[str] = field(default=None)
-    priority: Optional[str] = field(default=None)
-    description: Optional[str] = field(default=None)
-    statement_descriptor: Optional[str] = field(default=None)
-    remittance_information: Optional[str] = field(default=None)
-    purpose: Optional[str] = field(default=None)
-    line_items: Optional[str] = field(default=None)
-    metadata: Optional[dict] = field(default=None)
-    charge_bearer: Optional[str] = field(default=None)
-    foreign_exchange_indicator: Optional[str] = field(default=None)
-    foreign_exchange_contract: Optional[str] = field(default=None)
-    nsf_protected: Optional[str] = field(default=None)
-    originating_party_name: Optional[str] = field(default=None)
-    ultimate_originating_party_name: Optional[str] = field(default=None)
-    ultimate_originating_party_identifier: Optional[str] = field(default=None)
-    receiving_account: Optional[str] = field(default=None)
-    idempotency_key: Optional[str] = field(default=None)
+    originating_account_id: str = None
+    receiving_account_id: str = None
+    fallback_type: Optional[str] = None
+    subtype: Optional[str] = None
+    account_type: Optional[str] = None
+    party_name: Optional[str] = None
+    party_type: Optional[str] = None
+    party_address: Optional[str] = None
+    plaid_processor_token: Optional[str] = None
+    accounting_category_id: Optional[str] = None
+    accounting_ledger_class_id: Optional[str] = None
+    currency: Optional[str] = None
+    effective_date: Optional[str] = None
+    priority: Optional[str] = None
+    description: Optional[str] = None
+    statement_descriptor: Optional[str] = None
+    remittance_information: Optional[str] = None
+    purpose: Optional[str] = None
+    line_items: Optional[str] = None
+    metadata: Optional[dict] = None
+    charge_bearer: Optional[str] = None
+    foreign_exchange_indicator: Optional[str] = None
+    foreign_exchange_contract: Optional[str] = None
+    nsf_protected: Optional[str] = None
+    originating_party_name: Optional[str] = None
+    ultimate_originating_party_name: Optional[str] = None
+    ultimate_originating_party_identifier: Optional[str] = None
+    receiving_account: Optional[str] = None
+    idempotency_key: Optional[str] = None
     account_details: Optional[List[AccountDetailsRequest]] = field(default_factory=list)
     routing_details: Optional[List[RoutingDetailsRequest]] = field(default_factory=list)
 

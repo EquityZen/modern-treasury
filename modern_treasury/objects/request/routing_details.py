@@ -1,8 +1,14 @@
+from dataclasses import dataclass
+
+
+@dataclass
 class RoutingDetailsRequest:
-    def __init__(self, routing_number_type:str, routing_number:str, idempotency_key: str = None):
-        self.routing_number_type = routing_number_type
-        self.routing_number = routing_number
-        self.idempotency_key = f"routing_details_{idempotency_key}" if idempotency_key else None
+    routing_number_type: str
+    routing_number:str
+    idempotency_key: Optional[str] = None
+
+    def __post__init__(self):
+        self.idempotency_key = f"routing_details_{self.idempotency_key}" if self.idempotency_key else None
 
     def to_json(self):
         return {

@@ -1,21 +1,24 @@
-from typing import List
+from dataclasses import dataclass
+from typing import List, Optional
 
 from .account_details import AccountDetailsRequest
 
 
+@dataclass
 class VirtualAccountRequest:
-    def __init__(self, name:str, internal_account_id:str, credit_ledger_account_id:str=None,
-                 debit_ledger_account_id:str=None, counterparty_id:str=None,
-                 account_details_list:List[AccountDetailsRequest]=None, metadata=None,
-                 idempotency_key:str = None):
-        self.name = name
-        self.internal_account_id = internal_account_id
-        self.credit_ledger_account_id = credit_ledger_account_id
-        self.debit_ledger_account_id = debit_ledger_account_id
-        self.counterparty_id = counterparty_id
-        self.account_details_list = [] if not account_details_list else account_details_list
-        self.metadata = {} if not metadata else metadata
-        self.idempotency_key = f"virtual_account_{idempotency_key}" if idempotency_key else None
+    name:str
+    internal_account_id:str
+    credit_ledger_account_id: Optional[str] = None
+    debit_ledger_account_id: Optional[str] = None
+    counterparty_id: Optional[str] = None
+    account_details_list: Optional[List[AccountDetailsRequest]] = None
+    metadata: Optional[dict] = None
+    idempotency_key: Optional[str] = None
+    
+    def __post__init__(self):
+        self.account_details_list = [] if not self.account_details_list else self.account_details_list
+        self.metadata = {} if not self.metadata else self.metadata
+        self.idempotency_key = f"virtual_account_{self.idempotency_key}" if self.idempotency_key else None
 
     def to_json(self):
         account_details = [account_details.to_json() for account_details in self.account_details_list]

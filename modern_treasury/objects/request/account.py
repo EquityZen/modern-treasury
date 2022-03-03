@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import List
 
 from .account_details import AccountDetailsRequest
@@ -5,16 +6,12 @@ from .address import AddressRequest
 from .routing_details import RoutingDetailsRequest
 
 
+@dataclass
 class AccountRequest:
-    def __init__(self,
-                 address: AddressRequest,
-                 account_type:str,
-                 account_details_list: List[AccountDetailsRequest],
-                 routing_details_list: List[RoutingDetailsRequest]):
-        self.address = address
-        self.account_type = account_type
-        self.account_details_list = account_details_list
-        self.routing_details_list = routing_details_list
+    address: AddressRequest
+    account_type: str
+    account_details_list: List[AccountDetailsRequest]
+    routing_details_list: List[RoutingDetailsRequest]
 
     def to_json(self) -> dict:
         account_details = [account_details.to_json() for account_details in self.account_details_list]

@@ -1,14 +1,19 @@
+from dataclasses import dataclass
 from decimal import Decimal
+from typing import Optional
 
 
+@dataclass
 class IncomingPaymentDetailRequest:
-    def __init__(self, transfer_type:str, direction:str, amount: Decimal, virtual_account_id:str=None, internal_account_id:str=None, idempotency_key:str = None):
-        self.transfer_type = transfer_type
-        self.direction = direction
-        self.amount = int(amount * 100)
-        self.internal_account_id = internal_account_id
-        self.virtual_account_id = virtual_account_id
-        self.idempotency_key  = f"incoming_payment_detail_{idempotency_key}" if idempotency_key else None
+    transfer_type: str
+    direction:str
+    amount: Decimal
+    virtual_account_id: Optional[str] =None
+    internal_account_id: Optional[str] = None
+    idempotency_key: Optional[str] = None
+
+    def __post__init__(self):
+        self.idempotency_key  = f"incoming_payment_detail_{self.idempotency_key}" if self.idempotency_key else None
 
     def to_json(self):
         result = {
