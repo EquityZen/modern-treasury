@@ -11,7 +11,7 @@ class CounterPartyRequest():
     account_request_list: List[AccountRequest]
     idempotency_key: str = None
     
-    def __post__init__(self):
+    def __post_init__(self):
         self.idempotency_key = f"counterparty_{self.idempotency_key}" if self.idempotency_key else None
 
     def to_json(self) -> dict:

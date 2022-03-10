@@ -12,8 +12,9 @@ class IncomingPaymentDetailRequest:
     internal_account_id: Optional[str] = None
     idempotency_key: Optional[str] = None
 
-    def __post__init__(self):
+    def __post_init__(self):
         self.idempotency_key  = f"incoming_payment_detail_{self.idempotency_key}" if self.idempotency_key else None
+        self.amount = self.amount * 100
 
     def to_json(self):
         result = {

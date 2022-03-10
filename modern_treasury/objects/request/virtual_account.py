@@ -15,7 +15,7 @@ class VirtualAccountRequest:
     metadata: Optional[dict] = None
     idempotency_key: Optional[str] = None
     
-    def __post__init__(self):
+    def __post_init__(self):
         self.account_details_list = [] if not self.account_details_list else self.account_details_list
         self.metadata = {} if not self.metadata else self.metadata
         self.idempotency_key = f"virtual_account_{self.idempotency_key}" if self.idempotency_key else None

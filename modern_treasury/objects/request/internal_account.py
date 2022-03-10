@@ -11,7 +11,7 @@ class InternalAccountRequest():
     entity_id: Optional[str] = None
     idempotency_key: Optional[str] = None
 
-    def __post__init__(self):
+    def __post_init__(self):
         self.idempotency_key  = f"intenal_account_{self.idempotency_key}" if self.idempotency_key else None
 
     def to_json(self):

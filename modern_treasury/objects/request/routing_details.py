@@ -8,7 +8,7 @@ class RoutingDetailsRequest:
     routing_number:str
     idempotency_key: Optional[str] = None
 
-    def __post__init__(self):
+    def __post_init__(self):
         self.idempotency_key = f"routing_details_{self.idempotency_key}" if self.idempotency_key else None
 
     def to_json(self):
