@@ -144,6 +144,10 @@ class ModernTreasury:
         url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/routing_details/{routing_details_id}'
         return self._get(url=url)
 
+    def list_routing_details(self, external_account_id):
+        url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/routing_details/'
+        return self._get(url=url)
+
     def delete_routing_details(self, external_account_id:str, routing_details_id:str):
         url = f'{EXTERNAL_ACCOUNT_URL}/{external_account_id}/routing_details/{routing_details_id}'
         result = self._delete(url=url)
