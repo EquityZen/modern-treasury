@@ -1,20 +1,18 @@
+from dataclasses import dataclass
 from typing import Optional
 
 
+@dataclass
 class InternalAccountRequest():
-    def __init__(self,
-                 connection_id: str,
-                 name: str,
-                 party_name: str,
-                 currency: str,
-                 entity_id: Optional[str] = None,
-                 idempotency_key: Optional[str] = None):
-        self.connection_id = connection_id
-        self.name = name
-        self.party_name = party_name
-        self.currency = currency
-        self.entity_id = entity_id
-        self.idempotency_key  = f"intenal_account_{idempotency_key}" if idempotency_key else None
+    connection_id: str
+    name: str
+    party_name: str
+    currency: str
+    entity_id: Optional[str] = None
+    idempotency_key: Optional[str] = None
+
+    def __post_init__(self):
+        self.idempotency_key  = f"intenal_account_{self.idempotency_key}" if self.idempotency_key else None
 
     def to_json(self):
         return {

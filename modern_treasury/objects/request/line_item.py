@@ -1,9 +1,13 @@
+from dataclasses import dataclass
+from decimal import Decimal
+
+
+@dataclass
 class LineItemRequest:
-    def __init__(self, amount, metadata, description, accounting_category_id):
-        self.amount = amount
-        self.metadata = metadata
-        self.description = description
-        self.accounting_category_id = accounting_category_id
+    amount: Decimal
+    metadata: dict
+    description: str
+    accounting_category_id: str
 
     def to_json(self):
         return {

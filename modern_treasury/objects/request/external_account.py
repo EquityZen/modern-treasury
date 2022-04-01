@@ -1,23 +1,21 @@
 from .address import AddressRequest
 from .account_details import AccountDetailsRequest
 from .routing_details import RoutingDetailsRequest
-from typing import List
+from typing import List, Optional
 
 
 class ExternalAccountRequest():
-    def __init__(self,
-                 counterparty_id: str,
-                 account_details: List[AccountDetailsRequest] = None,
-                 routing_details: List[RoutingDetailsRequest] = None,
-                 account_type:str = None,
-                 party_address:AddressRequest = None,
-                 idempotency_key:str = None):
-        self.counterparty_id = counterparty_id
-        self.account_details = account_details if account_details else []
-        self.routing_details = routing_details if routing_details else []
-        self.account_type = account_type
-        self.party_address = party_address
-        self.idempotency_key  = f"external_account_{idempotency_key}" if idempotency_key else None
+    counterparty_id: str
+    account_details: Optional[List[AccountDetailsRequest]] = None
+    routing_details: Optional[List[RoutingDetailsRequest]] = None
+    account_type: Optional[str] = None
+    party_address: Optional[AddressRequest] = None
+    idempotency_key: Optional[str] = None
+
+    def __post_init__(self):
+        self.account_details = self.account_details if self.account_details else []
+        self.routing_details = self.routing_details if self.routing_details else []
+        self.idempotency_key  = f"external_account_{self.idempotency_key}" if self.idempotency_key else None
 
     def to_json(self):
         account_details_json = [account_detail.to_json() for account_detail in self.account_details]
