@@ -8,7 +8,6 @@ from .routing_details import RoutingDetailsRequest
 
 @dataclass
 class AccountRequest:
-    address: AddressRequest
     account_type: str
     account_details_list: List[AccountDetailsRequest]
     routing_details_list: List[RoutingDetailsRequest]
