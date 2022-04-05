@@ -6,6 +6,7 @@ from typing import Optional
 class RoutingDetailsRequest:
     routing_number_type: str
     routing_number:str
+    payment_type: str = ""
     idempotency_key: Optional[str] = None
 
     def __post_init__(self):
@@ -15,4 +16,5 @@ class RoutingDetailsRequest:
         return {
             "routing_number_type": self.routing_number_type,
             "routing_number": self.routing_number,
+            "payment_type": self.payment_type,
         }
