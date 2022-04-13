@@ -1,7 +1,6 @@
 import hashlib
 import hmac
 import requests
-from django.core.handlers.wsgi import WSGIRequest
 
 class Auth:
     @classmethod
@@ -11,7 +10,7 @@ class Auth:
         return response
 
 
-    def is_valid_webhook_request(request: WSGIRequest, webhook_auth_key):
+    def is_valid_webhook_request(request, webhook_auth_key):
         """
         Validates a webhook request, ensuring a valid signature.
         :param request: request
