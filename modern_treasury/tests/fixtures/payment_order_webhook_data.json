@@ -1,0 +1,585 @@
+{
+    "payment_order_created": {
+      "event": "created",
+      "data": {
+        "account_number": "222222223",
+        "amount": 9900,
+        "check_number": "11",
+        "created_at": "2019-12-12T22:34:59Z",
+        "currency": "USD",
+        "deposit_date": "2019-12-12",
+        "id": "9e5c22be-2145-4da4-963f-b0434765d18f",
+        "lockbox_number": "12345",
+        "memo_field": "Christmas Tip",
+        "object": "paper_item",
+        "remitter_name": "Cristina Angela",
+        "routing_number": "021000021",
+        "status": "pending",
+        "transaction_id": null,
+        "transaction_line_item_id": null,
+        "updated_at": "2019-12-12T22:34:59Z",
+        "metadata": {
+          "buyer_id": "1234",
+          "payment_type": "investor_money_transfer"
+        }
+      }
+    },
+    "payment_order_failed": {
+      "event": "failed",
+      "data": {
+        "id": "9e5c22be-2145-4da4-963f-b0434765d18f",
+        "metadata": {
+          "buyer_id": "1234",
+          "payment_type": "investor_money_transfer"
+        },
+        "status": "failed"
+      },
+      "error": {
+        "code": "parameter_invalid",
+        "message": "amount is invalid",
+        "parameter": "amount"
+      }
+    },
+    "payment_order_denied": {
+      "event": "denied",
+      "data": {
+        "id": "f865bd10-aea4-44d5-8853-1cae7adf8b7e",
+        "type": "wire",
+        "amount": 14667933,
+        "object": "payment_order",
+        "status": "denied",
+        "purpose": null,
+        "subtype": null,
+        "currency": "USD",
+        "metadata": {
+          "deal_id": "5678",
+          "buyer_id": "1234",
+          "payment_type": "outbound_money_transfer"
+        },
+        "priority": "normal",
+        "direction": "credit",
+        "live_mode": false,
+        "created_at": "2022-02-10T03:23:21Z",
+        "updated_at": "2022-02-10T03:23:27Z",
+        "description": null,
+        "charge_bearer": null,
+        "nsf_protected": false,
+        "current_return": null,
+        "effective_date": "2022-02-10",
+        "counterparty_id": "2e98ab60-717c-4fbe-9186-3672d8c2bd43",
+        "transaction_ids": [],
+        "receiving_account": {
+          "id": "adef951d-7198-4b3d-a078-a52deacf4dd5",
+          "name": null,
+          "object": "external_account",
+          "metadata": {},
+          "live_mode": false,
+          "created_at": "2022-02-04T20:44:05Z",
+          "party_name": "Rachel Miller",
+          "party_type": null,
+          "updated_at": "2022-02-04T20:44:05Z",
+          "account_type": "other",
+          "discarded_at": null,
+          "party_address": {
+            "id": "a44c89a3-52fe-410e-93b9-6764a07348ed",
+            "line1": "49968 Johnson Lake",
+            "line2": null,
+            "object": "address",
+            "region": "MA",
+            "country": "US",
+            "locality": "North Courtney",
+            "live_mode": false,
+            "created_at": "2022-02-04T20:44:05Z",
+            "updated_at": "2022-02-04T20:44:05Z",
+            "postal_code": null
+          },
+          "account_details": [
+            {
+              "id": "41f7c745-b9a5-4c7e-8885-340a22ef5b30",
+              "object": "account_detail",
+              "live_mode": false,
+              "created_at": "2022-02-09T18:39:35Z",
+              "updated_at": "2022-02-09T18:39:35Z",
+              "discarded_at": null,
+              "account_number": "794325831",
+              "account_number_type": "other"
+            }
+          ],
+          "routing_details": [
+            {
+              "id": "bfff671c-7a15-4c2a-a529-5dcd74f2dad6",
+              "object": "routing_detail",
+              "bank_name": "JPMorgan Chase Bank, National Association",
+              "live_mode": false,
+              "created_at": "2022-02-09T18:39:36Z",
+              "updated_at": "2022-02-09T18:39:36Z",
+              "bank_address": {
+                "id": "092bce38-669a-4ff0-b5e3-d43e7edd6fa5",
+                "line1": "1111 Polaris Pkwy",
+                "line2": null,
+                "object": "address",
+                "region": "OH",
+                "country": "US",
+                "locality": "Columbus",
+                "live_mode": false,
+                "created_at": "2021-10-07T15:21:30Z",
+                "updated_at": "2021-10-07T15:21:30Z",
+                "postal_code": "43240"
+              },
+              "discarded_at": null,
+              "payment_type": null,
+              "routing_number": "021000021",
+              "routing_number_type": "aba"
+            }
+          ],
+          "verification_status": "unverified"
+        },
+        "reference_numbers": [],
+        "receiving_account_id": "adef951d-7198-4b3d-a078-a52deacf4dd5",
+        "statement_descriptor": null,
+        "vendor_failure_reason": null,
+        "accounting_category_id": null,
+        "originating_account_id": "fe194ee0-585d-4b32-b47c-84e68d2ede90",
+        "originating_party_name": null,
+        "receiving_account_type": "external_account",
+        "remittance_information": null,
+        "foreign_exchange_contract": null,
+        "accounting_ledger_class_id": null,
+        "foreign_exchange_indicator": null,
+        "ultimate_receiving_party_name": null,
+        "ultimate_originating_party_name": null,
+        "ultimate_receiving_party_identifier": null,
+        "ultimate_originating_party_identifier": null
+      },
+      "error": {
+        "code": "parameter_invalid",
+        "message": "invalid bank info",
+        "parameter": "amount"
+      }
+    },
+    "payment_order_cancelled": {
+      "event": "cancelled",
+      "data": {
+        "accounting_category_id": null,
+        "amount": 123100,
+        "charge_bearer": null,
+        "counterparty_id": "928db55e-6552-4aaf-96d7-10c693922b1f",
+        "created_at": "2019-12-12T22:27:22Z",
+        "currency": "USD",
+        "description": null,
+        "direction": "credit",
+        "effective_date": "2019-12-13",
+        "foreign_exchange_contract": null,
+        "foreign_exchange_indicator": null,
+        "id": "9e5c22be-2145-4da4-963f-b0434765d18f",
+        "object": "payment_order",
+        "originating_account_id": "b9fc1ae0-d493-4f01-a7b3-b39104e802b5",
+        "priority": "normal",
+        "receiving_account": {
+          "account_details": [
+            {
+            }
+          ],
+          "account_type": "checking",
+          "created_at": "2019-11-21T22:51:04Z",
+          "id": "71fae619-afa6-45e6-8630-ce4d0b3d6387",
+          "intermediate_account_id": null,
+          "object": "external_account",
+          "party_address": null,
+          "party_name": "John Smith",
+          "party_type": null,
+          "routing_details": [
+            {
+            }
+          ],
+          "updated_at": "2019-11-21T22:51:04Z",
+          "verification_status": "unverified"
+        },
+        "receiving_account_id": "71fae619-afa6-45e6-8630-ce4d0b3d6387",
+        "receiving_account_type": "external_account",
+        "remittance_information": "December Rent",
+        "statement_descriptor": "Rent",
+        "status": "cancelled",
+        "transaction_ids": [],
+        "type": "ach",
+        "updated_at": "2019-12-12T22:27:25Z",
+        "metadata": {
+          "buyer_id": "1234",
+          "deal_id": "5678",
+          "payment_type": "outbound_money_transfer"
+        }
+      }
+    },
+    "payment_order_completed": {
+      "event": "completed",
+      "data": {
+        "accounting_category_id": null,
+        "amount": 123100,
+        "charge_bearer": null,
+        "counterparty_id": "928db55e-6552-4aaf-96d7-10c693922b1f",
+        "created_at": "2019-12-12T22:27:22Z",
+        "currency": "USD",
+        "description": null,
+        "direction": "credit",
+        "effective_date": "2019-12-13",
+        "foreign_exchange_contract": null,
+        "foreign_exchange_indicator": null,
+        "id": "9e5c22be-2145-4da4-963f-b0434765d18f",
+        "object": "payment_order",
+        "originating_account_id": "b9fc1ae0-d493-4f01-a7b3-b39104e802b5",
+        "priority": "normal",
+        "receiving_account": {
+          "account_details": [
+            {
+            }
+          ],
+          "account_type": "checking",
+          "created_at": "2019-11-21T22:51:04Z",
+          "id": "71fae619-afa6-45e6-8630-ce4d0b3d6387",
+          "intermediate_account_id": null,
+          "object": "external_account",
+          "party_address": null,
+          "party_name": "John Smith",
+          "party_type": null,
+          "routing_details": [
+            {
+            }
+          ],
+          "updated_at": "2019-11-21T22:51:04Z",
+          "verification_status": "unverified"
+        },
+        "receiving_account_id": "71fae619-afa6-45e6-8630-ce4d0b3d6387",
+        "receiving_account_type": "external_account",
+        "remittance_information": "December Rent",
+        "statement_descriptor": "Rent",
+        "status": "completed",
+        "transaction_ids": [],
+        "type": "ach",
+        "updated_at": "2019-12-12T22:27:25Z",
+        "metadata": {
+          "buyer_id": "1234",
+          "payment_type": "investor_money_transfer",
+          "deal_id": "5678"
+        }
+      }
+    },
+    "incoming_payment_details__completed": {
+      "event": "completed",
+      "data": {
+        "id": "4844bda1-eb57-4129-afb4-fc663a395ca0",
+        "object": "incoming_payment_detail",
+        "internal_account_id": "487b9a5c-6737-43ea-b11c-593f39226b92",
+        "virtual_account_id": "123456789",
+        "transaction_line_item_id": null,
+        "transaction_id": null,
+        "type": "ach",
+        "data": {
+          "batch_header_record": {
+            "batch_number": "999",
+            "company_name": "moderntreasury.com",
+            "settlement_date": 17,
+            "service_class_code": "200",
+            "effective_entry_date": "2019-01-30",
+            "company_identification": "9999999999",
+            "originator_status_code": "1",
+            "company_descriptive_date": "",
+            "company_entry_description": "moderntreasury.co",
+            "standard_entry_class_code": "CCD",
+            "company_discretionary_data": "",
+            "originating_dfi_identification": "99999999"
+          },
+          "detail_record": {
+            "amount": 10000,
+            "trace_number": "999999999999999",
+            "transaction_code": "27",
+            "dfi_account_number": "99999",
+            "discretionary_data": "",
+            "identification_number": "moderntreasury.com",
+            "receiving_company_name": "EXAMPLE INC",
+            "addenda_record_indicator": true
+          },
+          "payment_related_information": "Lorem Ipsum"
+        },
+        "amount": 10000,
+        "currency": "USD",
+        "direction": "debit",
+        "status": "pending",
+        "metadata": {},
+        "as_of_date": "2020-10-17",
+        "live_mode": true,
+        "created_at": "2020-10-15T04:23:11Z",
+        "updated_at": "2020-10-15T04:23:11Z"
+      }
+    },
+    "payment_order_company_transfer_completed": {
+      "event": "completed",
+      "data": {
+        "accounting_category_id": null,
+        "amount": 123100,
+        "charge_bearer": null,
+        "counterparty_id": "928db55e-6552-4aaf-96d7-10c693922b1f",
+        "created_at": "2019-12-12T22:27:22Z",
+        "currency": "USD",
+        "description": null,
+        "direction": "credit",
+        "effective_date": "2019-12-13",
+        "foreign_exchange_contract": null,
+        "foreign_exchange_indicator": null,
+        "id": "9e5c22be-2145-4da4-963f-b0434765d18f",
+        "object": "payment_order",
+        "originating_account_id": "b9fc1ae0-d493-4f01-a7b3-b39104e802b5",
+        "priority": "normal",
+        "receiving_account": {
+          "account_details": [
+            {
+            }
+          ],
+          "account_type": "checking",
+          "created_at": "2019-11-21T22:51:04Z",
+          "id": "71fae619-afa6-45e6-8630-ce4d0b3d6387",
+          "intermediate_account_id": null,
+          "object": "external_account",
+          "party_address": null,
+          "party_name": "John Smith",
+          "party_type": null,
+          "routing_details": [
+            {
+            }
+          ],
+          "updated_at": "2019-11-21T22:51:04Z",
+          "verification_status": "unverified"
+        },
+        "receiving_account_id": "71fae619-afa6-45e6-8630-ce4d0b3d6387",
+        "receiving_account_type": "external_account",
+        "remittance_information": "December Rent",
+        "statement_descriptor": "Rent",
+        "status": "completed",
+        "transaction_ids": [],
+        "type": "ach",
+        "updated_at": "2019-12-12T22:27:25Z",
+        "metadata": {
+          "deal_id": "5678",
+          "payment_type": "internal_money_transfer",
+          "transfer_type": "ESCROW_TO_FOC"
+        }
+      }
+    },
+    "payment_order_shareholder_transfer_completed": {
+      "event": "completed",
+      "data": {
+        "accounting_category_id": null,
+        "amount": 123100,
+        "charge_bearer": null,
+        "counterparty_id": "928db55e-6552-4aaf-96d7-10c693922b1f",
+        "created_at": "2019-12-12T22:27:22Z",
+        "currency": "USD",
+        "description": null,
+        "direction": "credit",
+        "effective_date": "2019-12-13",
+        "foreign_exchange_contract": null,
+        "foreign_exchange_indicator": null,
+        "id": "9e5c22be-2145-4da4-963f-b0434765d18f",
+        "object": "payment_order",
+        "originating_account_id": "b9fc1ae0-d493-4f01-a7b3-b39104e802b5",
+        "priority": "normal",
+        "receiving_account": {
+          "account_details": [
+            {
+            }
+          ],
+          "account_type": "checking",
+          "created_at": "2019-11-21T22:51:04Z",
+          "id": "71fae619-afa6-45e6-8630-ce4d0b3d6387",
+          "intermediate_account_id": null,
+          "object": "external_account",
+          "party_address": null,
+          "party_name": "John Smith",
+          "party_type": null,
+          "routing_details": [
+            {
+            }
+          ],
+          "updated_at": "2019-11-21T22:51:04Z",
+          "verification_status": "unverified"
+        },
+        "receiving_account_id": "71fae619-afa6-45e6-8630-ce4d0b3d6387",
+        "receiving_account_type": "external_account",
+        "remittance_information": "December Rent",
+        "statement_descriptor": "Rent",
+        "status": "completed",
+        "transaction_ids": [],
+        "type": "ach",
+        "updated_at": "2019-12-12T22:27:25Z",
+        "metadata": {
+          "deal_id": "5678",
+          "buyer_id": "1234",
+          "payment_type": "outbound_money_transfer"
+        }
+      }
+    },
+    "payment_order_cashless_exercise_transfer_completed": {
+      "event": "completed",
+      "data": {
+        "accounting_category_id": null,
+        "amount": 10000,
+        "charge_bearer": null,
+        "counterparty_id": "928db55e-6552-4aaf-96d7-10c693922b1f",
+        "created_at": "2019-12-12T22:27:22Z",
+        "currency": "USD",
+        "description": null,
+        "direction": "credit",
+        "effective_date": "2019-12-13",
+        "foreign_exchange_contract": null,
+        "foreign_exchange_indicator": null,
+        "id": "9e5c22be-2145-4da4-963f-b0434765d18f",
+        "object": "payment_order",
+        "originating_account_id": "b9fc1ae0-d493-4f01-a7b3-b39104e802b5",
+        "priority": "normal",
+        "receiving_account": {
+          "account_details": [
+            {
+            }
+          ],
+          "account_type": "checking",
+          "created_at": "2019-11-21T22:51:04Z",
+          "id": "71fae619-afa6-45e6-8630-ce4d0b3d6387",
+          "intermediate_account_id": null,
+          "object": "external_account",
+          "party_address": null,
+          "party_name": "John Smith",
+          "party_type": null,
+          "routing_details": [
+            {
+            }
+          ],
+          "updated_at": "2019-11-21T22:51:04Z",
+          "verification_status": "unverified"
+        },
+        "receiving_account_id": "71fae619-afa6-45e6-8630-ce4d0b3d6387",
+        "receiving_account_type": "external_account",
+        "remittance_information": "December Rent",
+        "statement_descriptor": "Rent",
+        "status": "completed",
+        "transaction_ids": [],
+        "type": "ach",
+        "updated_at": "2019-12-12T22:27:25Z",
+        "metadata": {
+          "deal_id": "5678",
+          "buyer_id": "1234",
+          "payment_type": "outbound_money_transfer"
+        }
+      }
+    },
+    "payment_order_approved": {
+      "data": {
+        "id": "f9d2d3a7-99e4-4465-bc46-0bb1a7ae352b",
+        "type": "wire",
+        "amount": 14667933,
+        "object": "payment_order",
+        "status": "approved",
+        "purpose": null,
+        "subtype": null,
+        "currency": "USD",
+        "metadata": {
+          "deal_id": "5678",
+          "buyer_id": "1234",
+          "payment_type": "outbound_money_transfer"
+        },
+        "priority": "normal",
+        "direction": "credit",
+        "live_mode": false,
+        "created_at": "2022-02-11T00:07:47Z",
+        "updated_at": "2022-02-11T00:07:55Z",
+        "description": null,
+        "charge_bearer": null,
+        "nsf_protected": false,
+        "current_return": null,
+        "effective_date": "2022-02-11",
+        "counterparty_id": "2e98ab60-717c-4fbe-9186-3672d8c2bd43",
+        "transaction_ids": [],
+        "receiving_account": {
+          "id": "adef951d-7198-4b3d-a078-a52deacf4dd5",
+          "name": null,
+          "object": "external_account",
+          "metadata": {},
+          "live_mode": false,
+          "created_at": "2022-02-04T20:44:05Z",
+          "party_name": "Rachel Miller",
+          "party_type": null,
+          "updated_at": "2022-02-04T20:44:05Z",
+          "account_type": "other",
+          "discarded_at": null,
+          "party_address": {
+            "id": "a44c89a3-52fe-410e-93b9-6764a07348ed",
+            "line1": "49968 Johnson Lake",
+            "line2": null,
+            "object": "address",
+            "region": "MA",
+            "country": "US",
+            "locality": "North Courtney",
+            "live_mode": false,
+            "created_at": "2022-02-04T20:44:05Z",
+            "updated_at": "2022-02-04T20:44:05Z",
+            "postal_code": null
+          },
+          "account_details": [
+            {
+              "id": "d656f926-c6a3-40d6-8064-35186daf5709",
+              "object": "account_detail",
+              "live_mode": false,
+              "created_at": "2022-02-10T21:21:34Z",
+              "updated_at": "2022-02-10T21:21:34Z",
+              "discarded_at": null,
+              "account_number": "794325831",
+              "account_number_type": "other"
+            }
+          ],
+          "routing_details": [
+            {
+              "id": "e6bd8b6c-7f17-4691-916b-a6b6a9807d8e",
+              "object": "routing_detail",
+              "bank_name": "JPMorgan Chase Bank, National Association",
+              "live_mode": false,
+              "created_at": "2022-02-10T21:21:35Z",
+              "updated_at": "2022-02-10T21:21:35Z",
+              "bank_address": {
+                "id": "092bce38-669a-4ff0-b5e3-d43e7edd6fa5",
+                "line1": "1111 Polaris Pkwy",
+                "line2": null,
+                "object": "address",
+                "region": "OH",
+                "country": "US",
+                "locality": "Columbus",
+                "live_mode": false,
+                "created_at": "2021-10-07T15:21:30Z",
+                "updated_at": "2021-10-07T15:21:30Z",
+                "postal_code": "43240"
+              },
+              "discarded_at": null,
+              "payment_type": null,
+              "routing_number": "021000021",
+              "routing_number_type": "aba"
+            }
+          ],
+          "verification_status": "unverified"
+        },
+        "reference_numbers": [],
+        "receiving_account_id": "adef951d-7198-4b3d-a078-a52deacf4dd5",
+        "statement_descriptor": null,
+        "vendor_failure_reason": null,
+        "accounting_category_id": null,
+        "originating_account_id": "fe194ee0-585d-4b32-b47c-84e68d2ede90",
+        "originating_party_name": null,
+        "receiving_account_type": "external_account",
+        "remittance_information": null,
+        "foreign_exchange_contract": null,
+        "accounting_ledger_class_id": null,
+        "foreign_exchange_indicator": null,
+        "ultimate_receiving_party_name": null,
+        "ultimate_originating_party_name": null,
+        "ultimate_receiving_party_identifier": null,
+        "ultimate_originating_party_identifier": null
+      }
+    }
+  }
+  
