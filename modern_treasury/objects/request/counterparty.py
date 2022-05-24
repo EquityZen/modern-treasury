@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
 
 from .account import AccountRequest
 
@@ -9,7 +9,7 @@ class CounterPartyRequest():
     name: str
     metadata: dict
     account_request_list: List[AccountRequest]
-    idempotency_key: str = None
+    idempotency_key: Optional[str] = None
     
     def __post_init__(self):
         self.idempotency_key = f"counterparty_{self.idempotency_key}" if self.idempotency_key else None
