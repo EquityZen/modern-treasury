@@ -1,9 +1,11 @@
+from dataclasses import dataclass
 from .address import AddressRequest
 from .account_details import AccountDetailsRequest
 from .routing_details import RoutingDetailsRequest
 from typing import List, Optional
 
 
+@dataclass
 class ExternalAccountRequest():
     counterparty_id: str
     account_details: Optional[List[AccountDetailsRequest]] = None
